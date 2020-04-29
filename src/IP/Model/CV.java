@@ -35,6 +35,7 @@ public class CV  {
     private String PersonURI;
     private String Description;
     private String targetSector;
+    private String targetRole;
     private String otherInfo;
     private String expectedSalary;
     private String salaryCurrency;
@@ -51,7 +52,19 @@ public class CV  {
     	Skills = new ArrayList<>();
     	SkillURIs = new ArrayList<>();
     }
-    
+
+    public String getExpectedSalary()	{   
+        return expectedSalary;
+    }
+
+    public String getPersonName()	{   
+        return "Noname";
+    }
+
+    public String getRole()	{   
+        return targetRole;
+    }
+
     @RDFSubject
     public String getURI()	{   
         return URI;

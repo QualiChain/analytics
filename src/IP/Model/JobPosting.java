@@ -5,6 +5,7 @@ import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import org.apache.jena.query.QuerySolution;
 import org.apache.jena.query.ResultSet;
@@ -250,6 +251,11 @@ public class JobPosting {
     	}        
         
         for(Skill skill : SkillReq) {
+            if (skill.getUri() == null){       
+                skill = Skill.getSkillByLabel(skill.getLabel());
+            }
+            
+            System.out.println(skill.getUri());
         	triple = new Triple(URI, "saro:needsSkill", skill.getUri());
         	SparqlEndPoint.insertTriple(triple);
         }

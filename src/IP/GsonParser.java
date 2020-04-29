@@ -39,14 +39,16 @@ public class GsonParser {
 
     }
 
-    public void toJobPosting(String data) {
+    public JobPosting toJobPosting(String data) {
 
         JobPosting p = g.fromJson(data, JobPosting.class);
 
+        String uri = "job-" + UUID.randomUUID();
         //ModelData modelD = new ModelData();
         //modelD.addPropertyToResource(modelD, resURI, propURI, prop_value);
+        p.setURI(uri);
 
-        Resource jobpost = model.createResource(jobpostURI + p.getLabel() + "-" + UUID.randomUUID());
+        Resource jobpost = model.createResource(uri);
 
         jobpost.addProperty(RDF.type, model.createProperty(jobpostURI + "JobPosting"));
         // jobpost.addProperty(model.createProperty("rdfs:label"),p.getLabel());
@@ -54,10 +56,14 @@ public class GsonParser {
         jobpost.addProperty(model.createProperty("rdfs:comment"), p.getJobDescription());
         jobpost.addProperty(model.createProperty(jobpostURI+"describes"), p.getJobDescription());
 
+        
         for (Skill skill : p.getSkillReq()) {
             jobpost.addProperty(model.createProperty("saro:requiresSkill"),skill.getLabel());
             jobpost.addProperty(model.createProperty(QualiChainURI + "requiresExperience"), skill.getLabel());
         }
+        
+        System.out.println("Jobposting created:"+uri);
+        return p;
 
     }
 

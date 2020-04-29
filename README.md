@@ -1,9 +1,15 @@
-# analytics
-1. Set the address of Sparql Endpoint of the knowledge engine in config/app.config file 
+# QualiChain Analytics Intelligent Profiling
 
-2. Create a Docker image using the fillowing command:
-docker build -t profiling .
+## How to install
+    - Clone this repository (git clone https://github.com/QualiChain/analytics.git)
 
+## Configuration
+    - Set the address of Sparql Endpoint in src/IP/config/app.config file 
 
-3. Run Docker container:
-docker run --publish 8000:8000 -t profiling
+## Create Docker image
+
+Run docker build -t profiling .
+
+## Runnig Docker container
+
+Run docker run --publish 8000:8000 -t profiling

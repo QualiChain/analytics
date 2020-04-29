@@ -35,8 +35,10 @@ public class RestServer {
 		
 		ResourceConfig config = new ResourceConfig();
 
+		config.register(CORSResponseFilter.class);
 		config.register(new CVService()); 
 		config.register(new JobpostingService()); 
+		config.register(new MatchingService()); 
 
 		
 		JdkHttpServerFactory.createHttpServer( URI.create(serverURI.replace(ip, "0.0.0.0")), config);
