@@ -32,110 +32,39 @@ import com.viceversatech.rdfbeans.annotations.RDFSubject;
 })
 
 @RDFBean("cv:Skill")
-public class Skill //implements Serializable 
+public class Skill extends RDFObject//implements Serializable 
 { 	
-    private static String ClassType ="cv:Skill";
-    private static String prefix ="cv:";  
-    private String SkillURI;
-    private String SkillID;
-    private String SkillLabel;
+    private static final String ClassType ="cv:Skill";
+    private static final String prefix ="cv:";  
     private String proficiencyLevel;
     private String priorityLevel;
-    //priority Level in the comment section of the skill
-    private String SkillComment;
+    
+    
+    //TODO: Add constructors for different cases if found necessary
     
     /**
      * Makes a Skill object with no set variables
      */
-    public Skill(){
+    public Skill() {
+    	super(ClassType, prefix);
+    }
+    
+    public Skill(String id, String label, String profLevel, String priority, String comment) {
+    	super(ClassType, prefix, id, label, comment);
+    	this.proficiencyLevel = profLevel;
+    	this.priorityLevel = priority;
+//    	if(profLevel == null)
+//    		this.proficiencyLevel = "";
+//    	else
+//    		this.proficiencyLevel = profLevel;
+//    	
+//    	if(priority == null)
+//    		this.priorityLevel = "";
+//    	else
+//    		this.priorityLevel = priority;
+    }
+    
 
-    }
-    
-    /**
-     * Makes a Skill object with a defined identifier URI
-     * @param URI Identifier URI in String format, should follow the convention for RDF URIs of "prefix:ID"
-     */
-    public Skill(String URI){
-        this.SkillURI = URI;
-    }
-
-    /**
-     * Returns the Skill URI
-     * @return Skill URI in String form
-     */
-    @RDFSubject
-    public String getUri()
-    {   
-        // must return absolute URI
-        return SkillURI;
-    }
-    
-    /**
-     * Sets the Skill SkillURI variable with the parameter URI
-     * @param URI Identifier URI in String format, should follow the convention for RDF URIs of "prefix:ID"
-     */
-    public void setURI(String URI) {
-    	if(URI.startsWith(prefix) || URI.startsWith("<"))
-    		this.SkillURI = URI;
-    	else
-    		this.SkillURI = prefix + URI;
-    }
-
-    /**
-     * Returns a unique identifier for the Skill, should be the part after the ":" of the URI
-     * @return Unique Skill ID without a prefix
-     */
-    @RDFSubject(prefix="cv:")
-    public String getId()
-    { 
-        // resource URI will be constructed by concatenation of the prefix and returned value
-        return SkillID;
-    }
-
-    /**
-     * Sets the SkillID variable to the value of parameter id
-     * @param id String value to set the SkillID variable in the Skill object
-     */
-    public void setId(String id) 
-    {  
-         this.SkillID = id;
-    }
-
-    /**
-     * Returns the Skill Label that represents the Skill name
-     * @return SkillLabel variable, represents the Skill name
-     */
-    @RDF("rdfs:label")
-    public String getLabel()
-    { 
-        return SkillLabel;
-    }
-    
-    /**
-     * Sets the name of the Skill as the variable SkillLabel
-     * @param label String value to set the SkillLabel with, represents the name of the Skill
-     */
-    public void setLabel(String label) 
-    {   
-        this.SkillLabel = label;  
-    }
-    
-    /**
-     * Returns the SkillComment variable, which represents a description of the represented Skill
-     * @return SkillComment variable, represents a description of the represented Skill
-     */
-    public String getComment() {
-    	return this.SkillComment;
-    }
-    
-    /**
-     * Sets the SkillComment variable in the Skill object
-     * @param comment String representation of the description of a Skill
-     */
-    public void setComment(String comment) {
-    	this.SkillComment = comment;
-    }
-    
     /**
      * Returns the proficiency level at which this Skill is known
      * @return proficiencyLevel variable, a String that represents the level of proficiency at which this Skill is known
@@ -171,25 +100,21 @@ public class Skill //implements Serializable
     
     /**
      * Transforms all the variables of the Skill into Triple class objects for insertion in the Database handled by the SparqlEndPoint class
+     * @throws Exception 
      */
-	public void Save() {
-
-            Triple triple = new Triple(SkillURI, "rdf:type", ClassType);
-            SparqlEndPoint.insertTriple(triple.toString());
-
-			triple = new Triple(SkillURI, "rdfs:label", SkillLabel);
-            SparqlEndPoint.insertPropertyValue(triple);
-
-			triple = new Triple(SkillURI, "rdfs:comment", SkillComment);
-            SparqlEndPoint.insertTriple(triple.toPropertyValueString());   
+	public void Save() throws Exception {
+            
+            super.save();
+            
+            Triple triple;
             
             if(proficiencyLevel != null) {
-            	triple = new Triple(SkillURI, "saro:atProficiencyLevel", proficiencyLevel);
+            	triple = new Triple(getURI(), "saro:atProficiencyLevel", proficiencyLevel);
             	SparqlEndPoint.insertPropertyValue(triple);
             }
             
             if(priorityLevel != null) {
-            	triple = new Triple(SkillURI, "qc:hasPriority", priorityLevel);
+            	triple = new Triple(getURI(), "qc:hasPriority", priorityLevel);
                 SparqlEndPoint.insertPropertyValue(triple);
             }
             
@@ -200,12 +125,19 @@ public class Skill //implements Serializable
 	 * @param uri The String representation of the URI of the desired Skill
 	 * @return Skill object representation of a Skill in the Database with the same URI as the parameter uri
 	 */
-	public static Skill getSkill(String uri) {
+	public static Skill getSkill(String URI) {
+        String uri = URI;
+        System.out.println(uri);
+    	if(!uri.startsWith(prefix) && !uri.startsWith("<http")) {
+        	if(uri.startsWith("http"))
+        		uri ="<"+ uri + ">";
+        	else
+        		uri = prefix+uri;
+        }
+        System.out.println(uri);
 		String properties = SparqlEndPoint.getAllProperties(uri);
 	    //System.out.println(properties);
         Skill skill = ParseResponseToSkill(properties);
-        String id = uri.split("#")[0].replace(">", "");
-	    skill.setId(id);
 	    skill.setURI(uri);
 	    
 	    return skill;
@@ -218,11 +150,13 @@ public class Skill //implements Serializable
 	 */
     public static Skill getSkillByLabel(String label) {
 		String properties = SparqlEndPoint.getInstancesByLabel(ClassType,label);
-       
         String uri = SparqlEndPoint.ParseResponseToURI(properties);
-        Skill skill = Skill.getSkill("<"+uri+">");
-        
-        return skill;
+        if (uri !=null){
+            Skill skill = Skill.getSkill(uri);
+            return skill;
+        }
+        else
+            return null;
 	}
 
     /**
@@ -232,6 +166,12 @@ public class Skill //implements Serializable
     public static List<Skill> getSkills(){
         String SparqlJsonResults = SparqlEndPoint.getInstances(ClassType);
         return ParseResponse(SparqlJsonResults);
+    }
+    
+    public static Skill deleteObject(String URI) {
+    	Skill skill = Skill.getSkill(URI);
+    	SparqlEndPoint.deleteObjectByUri(skill.getURI());
+    	return skill;
     }
     
     /**
@@ -253,7 +193,7 @@ public class Skill //implements Serializable
             //String ID = String.valueOf(res);            
             String ID =  res.getLocalName();            
             Skill skill = getSkill(prefix + ID);
-            skill.setId( ID);   
+            skill.setID( ID);   
             //cv.setURI(StringUtils.substringAfter(ID,"http://rdfs.org/resume-rdf/cv.rdfs#"));   
 
             Skills.add(skill);  
@@ -312,6 +252,7 @@ public class Skill //implements Serializable
 //                	System.out.println("comment : " + comment);
                 	skill.setPriorityLevel(priority);
                 	break;
+                	
                 default:
                     break;
             }

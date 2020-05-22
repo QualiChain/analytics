@@ -1,0 +1,16 @@
+version: '3'
+
+services:
+  app:
+    build: .
+    image: profiling:1.0
+    ports:
+      - 8000:8000
+
+  fuseki:
+    build:
+     context: .
+     dockerfile: Dockerfile_fuseki
+    image: fuseki
+    ports:
+      - 3030:3030

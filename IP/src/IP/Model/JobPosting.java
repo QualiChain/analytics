@@ -3,27 +3,32 @@ package IP.Model;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
+import java.security.interfaces.RSAKey;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+import com.github.jsonldjava.core.RDFDataset.Literal;
+
+import org.apache.jena.base.Sys;
 import org.apache.jena.query.QuerySolution;
 import org.apache.jena.query.ResultSet;
 import org.apache.jena.query.ResultSetFactory;
+import org.apache.jena.rdf.model.RDFNode;
 import org.apache.jena.rdf.model.Resource;
 import org.cyberborean.rdfbeans.annotations.RDF;
 import org.cyberborean.rdfbeans.annotations.RDFSubject;
 
-public class JobPosting {
+public class JobPosting extends RDFObject {
 	
 	private static final String ClassType = "saro:JobPosting";
 	public static final String prefix = "saro:";
 	private static final String schemaPrefix = "schema:";
-	private String URI;
-	private String ID;
-	private String Label;
-	//Seniority Level in the comment section of JobPosting
-	private String Comment;
+//	private String URI;
+//	private String ID;
+//	private String Label;
+//	//Seniority Level in the comment section of JobPosting
+//	private String Comment;
 	private String JobDescription;
 	private String ContractType;
 	private String Sector;
@@ -31,70 +36,81 @@ public class JobPosting {
 	private String ListingOrganization;
 	private String HiringOrganization;
 	private String JobLocation;
+	private String startDate;
+	private String endDate;
+	private String SeniorityLevel;
 	//Required Skills URIs
-	private List<String> SkillReqURIs;
+	private List<String> skillReqURIs;
 	//Required Skills
-	private List<Skill> SkillReq;
+	private List<Skill> skillReq;
 	//match with courses
-	private List<String> CapabilityReq;
+	private List<Course> coursesReq;
 	//match with work experience
-	private List<String> KnowledgeReq;
+	private List<WorkHistory> workExperienceReq;
 	//match with education and courses?
-	private List<String> ExpertiseReq;
+	private List<Education> educationReq;
 	
 	//Might have to change according to QualiChain ontology model
 	
-	
+	//TODO: Add constructors for different cases if found necessary
 	public JobPosting() {
-		SkillReqURIs = new ArrayList<String>();
-		SkillReq = new ArrayList<Skill>();
-		CapabilityReq = new ArrayList<String>();
-		KnowledgeReq = new ArrayList<String>();
-		ExpertiseReq = new ArrayList<String>();
+		super(ClassType, prefix);
+		skillReqURIs = new ArrayList<String>();
+		skillReq = new ArrayList<Skill>();
+		coursesReq = new ArrayList<Course>();
+		workExperienceReq = new ArrayList<WorkHistory>();
+		educationReq = new ArrayList<Education>();
 	}
 	
-	 
-    @RDFSubject
-    public String getUri()	{   
-        // must return absolute URI
-        return URI;
-    }
-    
-    //unnecessary if setId is used to set the uri as well
-    public void setURI(String uri) {
-    	if(uri.startsWith(prefix) || uri.startsWith("<"))
-    		this.URI = uri;
-    	else 
-    		this.URI = prefix + uri;
-    }
+	public JobPosting(String id, String label,String comment, String jobDescription, String contractType, String sector, String occupation,
+			String listingOrg, String hiringOrg, String jobLoc, String startDate, String endDate, String seniorityLevel,
+			List<Skill> skillReq, List<Course> capReq, List<WorkHistory> knowReq, List<Education> exptReq) {
+		super(ClassType, prefix, id, label, comment);
+//		this.ID = id;
+//		this.URI = prefix+id;
+//		this.Label = label;
+//		this.Comment = comment;
+		this.JobDescription = jobDescription;
+		this.ContractType= contractType;
+		this.Sector = sector;
+		this.Occupation = occupation;
+		this.ListingOrganization = listingOrg;
+		this.HiringOrganization = hiringOrg;
+		this.JobLocation = jobLoc;
+		this.startDate = startDate;
+		this.endDate = endDate;
+		this.SeniorityLevel = seniorityLevel;
+		
+		if(skillReq == null) {
+			this.skillReq = new ArrayList<Skill>();
+			this.skillReqURIs = new ArrayList<String>();
+		}	
+		else {
+			this.skillReq = skillReq;
+			this.skillReqURIs = new ArrayList<String>(skillReq.size());
+			for(Skill skill: skillReq) {
+				this.skillReqURIs.add(skill.getURI());
+			}
+		}
 
-    @RDFSubject(prefix=prefix)
-    public String getId()	{ 
-        // resource URI will be constructed by concatenation of the prefix and returned value
-        return ID;
-    }
-    public void setId(String id) {  
-         this.ID = id;
-         this.URI = prefix + id;
-    }
-
-    @RDF("rdfs:label")
-    public String getLabel()	{ 
-        // this property will be represented as an RDF statement with the foaf:name predicate
-        return Label;
-    }
-    
-    public void setLabel(String label) {   
-        this.Label = label;  
-    }
-    
-    public String getComment() {
-    	return Comment;
-    }
-    
-    public void setComment(String comment) {
-    	this.Comment = comment;
-    }
+		
+		if(capReq == null) 
+			this.coursesReq = new ArrayList<Course>();
+		else
+			this.coursesReq = capReq;
+		
+		if(knowReq == null)
+			this.workExperienceReq = new ArrayList<WorkHistory>();
+		else
+			this.workExperienceReq = knowReq;
+		
+		if(exptReq == null)
+			this.educationReq = new ArrayList<Education>();
+		else
+			this.educationReq = exptReq;
+		
+	}
+	
     
     public String getJobDescription() {
     	return JobDescription;
@@ -152,12 +168,36 @@ public class JobPosting {
     	this.JobLocation = jobLoc;
     }
     
+    public String getStartDate() {
+    	return startDate;
+    }
+    
+    public void setStartDate(String startDate) {
+    	this.startDate = startDate;
+    }
+    
+    public String getEndDate() {
+    	return endDate;
+    }
+    
+    public void setEndDate(String endDate) {
+    	this.endDate = endDate;
+    }
+    
+    public String getSeniorityLevel() {
+    	return SeniorityLevel;
+    }
+    
+    public void setSeniorityLevel(String SeniorityLevel) {
+    	this.SeniorityLevel = SeniorityLevel;
+    }
+    
     public List<Skill> getSkillReq(){
-    	return SkillReq;
+    	return skillReq;
     }
     
     public List<String> getSkillReqURIs(){
-    	return SkillReqURIs;
+    	return skillReqURIs;
     }
     
     public void addSkillReq(String URI) {
@@ -165,114 +205,137 @@ public class JobPosting {
             URI = "<" + URI + ">";
 
         Skill skill = Skill.getSkill(URI);
-        SkillReq.add(skill);
-        SkillReqURIs.add(URI);
+        skillReq.add(skill);
+        skillReqURIs.add(URI);
 
     }
     
     public void addSkillReq(Skill skill) {
-    	SkillReq.add(skill);
-    	SkillReqURIs.add(skill.getUri());
+    	skillReq.add(skill);
+    	skillReqURIs.add(skill.getURI());
     }
     
-    public List<String> getCapabilityReq(){
-    	return CapabilityReq;
+    public void addSkillsReq(List<Skill> skills) {
+    	skillReq.addAll(skills);
+    	for(Skill skill: skills) {
+    		skillReqURIs.add(skill.getURI());
+    	}
     }
     
-    public void addCapabilityReq(String capReq) {
-    	this.CapabilityReq.add(capReq);
+    public List<Course> getCapabilityReq(){
+    	return coursesReq;
     }
     
-    public List<String> getKnowledgeReq(){
-    	return KnowledgeReq;
+    public void addCapabilityReq(Course capReq) {
+    	this.coursesReq.add(capReq);
     }
     
-    public void addKnowledgeReq(String KnowledgeReq) {
-    	this.KnowledgeReq.add(KnowledgeReq);
+    public List<WorkHistory> getKnowledgeReq(){
+    	return workExperienceReq;
     }
     
-    public List<String> getExpertiseReq(){
-    	return ExpertiseReq;
+    public void addKnowledgeReq(WorkHistory KnowledgeReq) {
+    	this.workExperienceReq.add(KnowledgeReq);
     }
     
-    public void addExpertiseReq(String expertiseReq) {
-    	this.ExpertiseReq.add(expertiseReq);
+    public List<Education> getExpertiseReq(){
+    	return educationReq;
+    }
+    
+    public void addExpertiseReq(Education expertiseReq) {
+    	this.educationReq.add(expertiseReq);
     }
     
     
     
-    public void Save() {
-    	Triple triple = new Triple(URI, "rdf:type", ClassType);
-        SparqlEndPoint.insertTriple(triple);
-
-        if(Label != null) {
-        	triple = new Triple(URI, "rdfs:label", Label);
-            SparqlEndPoint.insertPropertyValue(triple);	
-        }
-		
-        if(Comment != null) {
-        	triple = new Triple(URI, "rdfs:comment", Comment);
-            SparqlEndPoint.insertPropertyValue(triple);	
-        }
+    public void Save() throws Exception {
+    	
+    	super.save();
+    	Triple triple;
         
         if(JobDescription != null) {
-            triple = new Triple(URI, "saro:describes", JobDescription);
+            triple = new Triple(getURI(), "saro:describes", JobDescription);
             SparqlEndPoint.insertPropertyValue(triple);	
         }
         
         if(ContractType != null) {
-            triple = new Triple(URI, schemaPrefix +  "employmentType", ContractType);
+            triple = new Triple(getURI(), schemaPrefix +  "employmentType", ContractType);
             SparqlEndPoint.insertPropertyValue(triple);
         }
         
         if(Sector != null) {
-        	triple = new Triple(URI, "saro:advertisedIn", Sector);
+        	triple = new Triple(getURI(), "saro:advertisedIn", Sector);
             SparqlEndPoint.insertPropertyValue(triple);
         }
         
         if(Occupation != null) {
-        	triple = new Triple(URI, schemaPrefix + "occupationalCategory", Occupation);
+        	triple = new Triple(getURI(), schemaPrefix + "occupationalCategory", Occupation);
     		SparqlEndPoint.insertPropertyValue(triple);
     	}
         
         if(ListingOrganization != null) {
-        	triple = new Triple(URI, schemaPrefix + "listingOrganization", schemaPrefix + ListingOrganization);
-    		SparqlEndPoint.insertTriple(triple);
+        	//Not sure if it should be an object or a simple value
+//        	triple = new Triple(getURI(), schemaPrefix + "listingOrganization", schemaPrefix + ListingOrganization);
+//    		SparqlEndPoint.insertTriple(triple);
+    		triple = new Triple(getURI(), schemaPrefix + "listingOrganization", ListingOrganization);
+    		SparqlEndPoint.insertPropertyValue(triple);
     	}
         
         if(HiringOrganization != null) {
-        	triple = new Triple(URI, schemaPrefix + "hiringOrganization", schemaPrefix +  HiringOrganization);
-    		SparqlEndPoint.insertTriple(triple);
+        	//Not sure if it should be an object or a simple value
+//        	triple = new Triple(getURI(), schemaPrefix + "hiringOrganization", schemaPrefix +  HiringOrganization);
+//    		SparqlEndPoint.insertTriple(triple);
+    		triple = new Triple(getURI(), schemaPrefix + "hiringOrganization", HiringOrganization);
+    		SparqlEndPoint.insertPropertyValue(triple);
     	}
         
         if(JobLocation != null) {
-        	triple = new Triple(URI, schemaPrefix + "jobLocation", schemaPrefix + JobLocation);
-    		SparqlEndPoint.insertTriple(triple);
+        	triple = new Triple(getURI(), schemaPrefix + "jobLocation",  JobLocation);
+    		SparqlEndPoint.insertPropertyValue(triple);
     	}        
         
-        for(Skill skill : SkillReq) {
-            if (skill.getUri() == null){       
-                skill = Skill.getSkillByLabel(skill.getLabel());
-            }
-            
-            System.out.println(skill.getUri());
-        	triple = new Triple(URI, "saro:needsSkill", skill.getUri());
+        if(startDate != null) {
+        	triple = new Triple(getURI(), prefix + "startDate", startDate);
+        	SparqlEndPoint.insertPropertyValue(triple);
+        }
+        
+        if(endDate != null) {
+        	triple = new Triple(getURI(), prefix + "endDate", endDate);
+        	SparqlEndPoint.insertPropertyValue(triple);
+        }
+        
+        if(SeniorityLevel != null) {
+        	triple = new Triple(getURI(), prefix + "level", SeniorityLevel);
+        	SparqlEndPoint.insertPropertyValue(triple);
+        }
+        
+        for(Skill skill : skillReq) {
+
+			String label=skill.getLabel();
+            if (skill.getURI() == null){
+				if (RDFObject.exists(label))
+					skill = Skill.getSkillByLabel(label);
+				else
+					skill.Save(); 
+			}
+			
+        	triple = new Triple(getURI(), "saro:needsSkill", skill.getURI());
         	SparqlEndPoint.insertTriple(triple);
         }
         
-        for(String capability : CapabilityReq) {
-        	triple = new Triple(URI, "saro:requiresCapability", capability);
-        	SparqlEndPoint.insertPropertyValue(triple);
+        for(Course capability : coursesReq) {
+        	triple = new Triple(getURI(), "saro:requiresCapability", capability.getURI());
+        	SparqlEndPoint.insertTriple(triple);
         }
         
-        for(String knowledge : KnowledgeReq) {
-        	triple = new Triple(URI, "saro:requiresKnowledge", knowledge);
-        	SparqlEndPoint.insertPropertyValue(triple);
+        for(WorkHistory knowledge : workExperienceReq) {
+        	triple = new Triple(getURI(), "saro:requiresKnowledge", knowledge.getURI());
+        	SparqlEndPoint.insertTriple(triple);
         }
         
-        for(String expertise : ExpertiseReq) {
-        	triple = new Triple(URI, "saro:requiresExpertise", expertise);
-        	SparqlEndPoint.insertPropertyValue(triple);
+        for(Education expertise : educationReq) {
+        	triple = new Triple(getURI(), "saro:requiresExpertise", expertise.getURI());
+        	SparqlEndPoint.insertTriple(triple);
         }
 
     }
@@ -281,8 +344,8 @@ public class JobPosting {
 	public List<String> getJobSkillReqLabels(){
 		List<String> skillLabels = new ArrayList<String>();
 		Skill temp = null;
-		for(Skill skill : SkillReq) {
-			temp = Skill.getSkill(skill.getUri());
+		for(Skill skill : skillReq) {
+			temp = Skill.getSkill(skill.getURI());
 			skillLabels.add(temp.getLabel());
 		}
 		return skillLabels;
@@ -293,20 +356,22 @@ public class JobPosting {
         return ParseResponse(SparqlJsonResults);
     }
 
+    //TODO: Analyze and fix this method, returning odd results
     public static JobPosting getJobPosting(String URI){
-    
-        if (!(URI.startsWith(JobPosting.prefix))){
-            URI = JobPosting.prefix+URI;
+    	String uri = URI;
+        if (!uri.startsWith(JobPosting.prefix) && !uri.startsWith("<http")){
+        	if(uri.startsWith("http"))
+        		uri = "<" + uri + ">";
+        	else
+        		uri = JobPosting.prefix+URI;
         }
-        
-        String properties = SparqlEndPoint.getAllProperties(URI);
-        //System.out.println(properties);
+        String properties = SparqlEndPoint.getAllProperties(uri);
         JobPosting jp = ParseResponseToJobPost(properties);
-        jp.setURI(URI);
+        jp.setURI(uri);
         return jp;
     }
     
-    //TODO:
+
     //Could be a problem if there are multiple job posts with similar labels?
     public static JobPosting getJobPostingByLabel(String label){
     	String SparqlJsonResults = SparqlEndPoint.getInstancesByPartialLabel(ClassType, label);
@@ -334,6 +399,12 @@ public class JobPosting {
     	return ParseResponse(SparqlJsonResults);
     }
     
+    public static JobPosting deleteObject(String URI) {
+    	JobPosting jp = JobPosting.getJobPosting(URI);
+    	SparqlEndPoint.deleteObjectByUri(jp.getURI());
+    	return jp;
+    }
+    
     
     
     private static List<JobPosting> ParseResponse(String SparqlJsonResults){
@@ -348,9 +419,10 @@ public class JobPosting {
             Resource res= soln.getResource("subject");
 
             //String ID = String.valueOf(res);            
-            String ID =  res.getLocalName();            
+            String ID =  res.getLocalName(); 
             JobPosting jp = getJobPosting(prefix + ID);
-            jp.setId( ID);   
+
+            jp.setID( ID);   
             //cv.setURI(StringUtils.substringAfter(ID,"http://rdfs.org/resume-rdf/cv.rdfs#"));   
 
             JPs.add(jp);  
@@ -372,33 +444,42 @@ public class JobPosting {
 
             QuerySolution soln = results.nextSolution();
             
-//            System.out.println("soln: "+soln.toString());
+            //System.out.println("soln: "+soln.toString());
 
             //String predicate = String.valueOf(soln.getResource("predicate"));   
             //System.out.println("predicate: "+predicate);
 
             Resource res= soln.getResource("predicate");
 
+            RDFNode Onode = soln.get("object");
+            String object="";
+            if (Onode.isResource()) {
+                object = String.valueOf(soln.getResource("object"));
+            }
+            else{
+                object = String.valueOf(soln.getLiteral("object"));   
+            }
+
             switch (res.getLocalName()) {
                 case "type":
-                    String type = String.valueOf(soln.getResource("object"));   
+                    String type = object;   
 //                    System.out.println("type: "+type);
                     break;
 
                 case "label":
-                    String label = String.valueOf(soln.getLiteral("object"));   
+                    String label = object;   
 //                    System.out.println("label: " + label);
                     jp.setLabel(label);
                     break;
 
                 case "comment":
-                	String comment = String.valueOf(soln.getLiteral("object"));  
+                	String comment = object;
 //                	System.out.println("comment : " + comment);
                 	jp.setComment(comment);
                 	break;
                 	
                 case "describes":
-                    String description = String.valueOf(soln.getLiteral("object"));     
+                    String description = object;     
                 	if(description.contains("#"))
                 		description = description.substring(description.indexOf("#") + 1);
 //                    System.out.println("description: "+description);
@@ -406,13 +487,13 @@ public class JobPosting {
                     break;
 
                 case "employmentType":
-                    String empType = String.valueOf(soln.getLiteral("object"));   
+                    String empType = object;   
 //                    System.out.println("employmentType: " + empType);
                     jp.setContractType(empType);
                     break;
 
                 case "advertisedIn":
-                	String sector = String.valueOf(soln.getLiteral("object"));       
+                	String sector = object;
                 	if(sector.contains("#"))
                 		sector = sector.substring(sector.indexOf("#") + 1);
 //                	System.out.println("Sector : " + sector);
@@ -420,13 +501,13 @@ public class JobPosting {
                 	break;
                 	
                 case "occupationalCategory":
-                	String occupation = String.valueOf(soln.getLiteral("object"));
+                	String occupation = object;
 //                	System.out.println("Ocupation/Position: " + occupation);
                 	jp.setOccupation(occupation);
                 	break;
                 	
                 case "listingOrganization":
-                	String listingOrg = String.valueOf(soln.getResource("object"));
+                	String listingOrg = object;
 //                	System.out.println("Listed by: " + listingOrg);
                 	//contains(prefix associated with the triple in question) is probably the best way to do this without potentially
                 	//erasing part of the triple if it contains a "/"
@@ -436,7 +517,7 @@ public class JobPosting {
                 	break;
                 	
                 case "hiringOrganization":
-                	String hiringOrg = String.valueOf(soln.getResource("object"));
+                	String hiringOrg = object;
 //                	System.out.println("Hiring to: " + hiringOrg);
                 	if(hiringOrg.contains("/"))
                 		hiringOrg = hiringOrg.substring(hiringOrg.lastIndexOf("/") + 1);
@@ -444,7 +525,7 @@ public class JobPosting {
                 	break;
 
                 case "jobLocation":
-                	String jobLoc = String.valueOf(soln.getResource("object"));
+                	String jobLoc = object;
 //                	System.out.println("Job location: " + jobLoc);
                 	if(jobLoc.contains("/"))
                 		jobLoc = jobLoc.substring(jobLoc.lastIndexOf("/") + 1);
@@ -452,27 +533,42 @@ public class JobPosting {
                 	break;
 
                 case "requiresCapability":
-                	String reqCapability = String.valueOf(soln.getResource("object"));
+                	String reqCapability = object;
 //                	System.out.println("Capability requirement: " + reqCapability);
-                	jp.addCapabilityReq(reqCapability);
+                	jp.addCapabilityReq(Course.getCourse(reqCapability));
                 	break;
 
                 case "requiresKnowledge":
-                	String reqKnowledge = String.valueOf(soln.getResource("object"));
+                	String reqKnowledge = object;
 //                	System.out.println("Knowledge requirement: " + reqKnowledge);
-                	jp.addKnowledgeReq(reqKnowledge);
+                	jp.addKnowledgeReq(WorkHistory.getWorkHistory(reqKnowledge));
                 	break;
 
                 case "requiresExpertise":
-                	String reqExpertise = String.valueOf(soln.getResource("object"));
+                	String reqExpertise = object;
 //                	System.out.println("Expertise requirement: " + reqExpertise);
-                	jp.addExpertiseReq(reqExpertise);
+                	jp.addExpertiseReq(Education.getEducation(reqExpertise));
                 	break;
                 	
                 case "needsSkill":
-                	String reqSkill = String.valueOf(soln.getResource("object"));
+                	String reqSkill = object;
 //                	System.out.println("Skill requirement: " + reqSkill);
                 	jp.addSkillReq(reqSkill);
+                	break;
+                	
+                case "startDate":
+                	String startDate = object;
+                	jp.setStartDate(startDate);
+                	break;
+                
+                case "endDate":
+                	String endDate = object;
+                	jp.setEndDate(endDate);
+                	break;
+                	
+                case "level": 
+                	String level = object;
+                	jp.setSeniorityLevel(level);
                 	break;
                 	
                 default:

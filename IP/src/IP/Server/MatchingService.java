@@ -66,11 +66,11 @@ public class MatchingService {
 	}
 	
 	private static String matching(JobPosting job) {
-        System.out.println("Listing cv scores for the Job Post with URI: " + job.getUri() + " :");
+        System.out.println("Listing cv scores for the Job Post with URI: " + job.getURI() + " :");
         System.out.println("Job Requirements: ");
         List<Skill> reqs = job.getSkillReq();
         for (Skill req : reqs) {
-            System.out.println("     " + req.getUri());
+            System.out.println("     " + req.getURI());
         }
         HashMap<String, Integer> scores = Matching.getAllCvMatches(job);
 
@@ -88,8 +88,8 @@ public class MatchingService {
 
 				JsonObject jsonPropValue=new JsonObject();
 				jsonPropValue.addProperty("id",uri);
-				jsonPropValue.addProperty("name",cv.getPersonName());
-				jsonPropValue.addProperty("role",cv.getRole());
+				jsonPropValue.addProperty("name",cv.getPersonURI());
+				jsonPropValue.addProperty("role","");
 				jsonPropValue.addProperty("available","01/01/2020");
 				jsonPropValue.addProperty("expsalary",cv.getExpectedSalary());
 				jsonPropValue.addProperty("score",score);

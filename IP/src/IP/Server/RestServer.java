@@ -36,6 +36,7 @@ public class RestServer {
 		ResourceConfig config = new ResourceConfig();
 
 		config.register(CORSResponseFilter.class);
+		config.register(new PersonService()); 
 		config.register(new CVService()); 
 		config.register(new JobpostingService()); 
 		config.register(new MatchingService()); 

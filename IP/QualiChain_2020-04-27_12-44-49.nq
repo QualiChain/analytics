@@ -1,0 +1,127 @@
+<http://rdfs.org/resume-rdf/cv.rdfs#skill_1> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://rdfs.org/resume-rdf/cv.rdfs#Skill> .
+<http://rdfs.org/resume-rdf/cv.rdfs#skill_1> <http://www.w3.org/2000/01/rdf-schema#label> "Excel" .
+<http://rdfs.org/resume-rdf/cv.rdfs#skill_1> <http://www.w3.org/2000/01/rdf-schema#comment> "Knowledge in Excel" .
+<http://rdfs.org/resume-rdf/cv.rdfs#skill_1> <http://w3id.org/saro#atProficiencyLevel> "" .
+<http://rdfs.org/resume-rdf/cv.rdfs#skill_1> <http://w3id.org/qualichain#hasPriority> "" .
+<http://rdfs.org/resume-rdf/cv.rdfs#skill_2> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://rdfs.org/resume-rdf/cv.rdfs#Skill> .
+<http://rdfs.org/resume-rdf/cv.rdfs#skill_2> <http://www.w3.org/2000/01/rdf-schema#label> "Soldering" .
+<http://rdfs.org/resume-rdf/cv.rdfs#skill_2> <http://www.w3.org/2000/01/rdf-schema#comment> "Experience in Soldering" .
+<http://rdfs.org/resume-rdf/cv.rdfs#skill_2> <http://w3id.org/saro#atProficiencyLevel> "" .
+<http://rdfs.org/resume-rdf/cv.rdfs#skill_2> <http://w3id.org/qualichain#hasPriority> "" .
+<http://rdfs.org/resume-rdf/cv.rdfs#skill_3> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://rdfs.org/resume-rdf/cv.rdfs#Skill> .
+<http://rdfs.org/resume-rdf/cv.rdfs#skill_3> <http://www.w3.org/2000/01/rdf-schema#label> "Personnel Management" .
+<http://rdfs.org/resume-rdf/cv.rdfs#skill_3> <http://www.w3.org/2000/01/rdf-schema#comment> "Basic training in personnel Management" .
+<http://rdfs.org/resume-rdf/cv.rdfs#skill_3> <http://w3id.org/saro#atProficiencyLevel> "" .
+<http://rdfs.org/resume-rdf/cv.rdfs#skill_3> <http://w3id.org/qualichain#hasPriority> "" .
+<http://rdfs.org/resume-rdf/cv.rdfs#skill_4> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://rdfs.org/resume-rdf/cv.rdfs#Skill> .
+<http://rdfs.org/resume-rdf/cv.rdfs#skill_4> <http://www.w3.org/2000/01/rdf-schema#label> "AGV Maintenence" .
+<http://rdfs.org/resume-rdf/cv.rdfs#skill_4> <http://www.w3.org/2000/01/rdf-schema#comment> "Knows how to use diagnotics tools for AGV automatons, re-program sensors, stress tests etc..." .
+<http://rdfs.org/resume-rdf/cv.rdfs#skill_4> <http://w3id.org/saro#atProficiencyLevel> "" .
+<http://rdfs.org/resume-rdf/cv.rdfs#skill_4> <http://w3id.org/qualichain#hasPriority> "" .
+<http://rdfs.org/resume-rdf/cv.rdfs#skill_5> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://rdfs.org/resume-rdf/cv.rdfs#Skill> .
+<http://rdfs.org/resume-rdf/cv.rdfs#skill_5> <http://www.w3.org/2000/01/rdf-schema#label> "Financial Advisory" .
+<http://rdfs.org/resume-rdf/cv.rdfs#skill_5> <http://www.w3.org/2000/01/rdf-schema#comment> "Will help you grow your company or manage your personal finances" .
+<http://rdfs.org/resume-rdf/cv.rdfs#skill_5> <http://w3id.org/saro#atProficiencyLevel> "" .
+<http://rdfs.org/resume-rdf/cv.rdfs#skill_5> <http://w3id.org/qualichain#hasPriority> "" .
+<http://rdfs.org/resume-rdf/cv.rdfs#id1> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://rdfs.org/resume-rdf/cv.rdfs#CV> .
+<http://rdfs.org/resume-rdf/cv.rdfs#id1> <http://www.w3.org/2000/01/rdf-schema#label> "Example CV 1" .
+<http://rdfs.org/resume-rdf/cv.rdfs#id1> <http://www.w3.org/2000/01/rdf-schema#comment> "No comment" .
+<http://rdfs.org/resume-rdf/cv.rdfs#id1> <http://rdfs.org/resume-rdf/cv.rdfs#aboutPerson> <http://w3id.org/qualichain#Alberto> .
+<http://rdfs.org/resume-rdf/cv.rdfs#id1> <http://rdfs.org/resume-rdf/cv.rdfs#cvTitle> "Albertos CV" .
+<http://rdfs.org/resume-rdf/cv.rdfs#id1> <http://rdfs.org/resume-rdf/cv.rdfs#hasDescription> "Things Alberto has done" .
+<http://rdfs.org/resume-rdf/cv.rdfs#id1> <http://rdfs.org/resume-rdf/cv.rdfs#hasWorkHistory> "Some Bank or other" .
+<http://rdfs.org/resume-rdf/cv.rdfs#id1> <http://rdfs.org/resume-rdf/cv.rdfs#hasEducation> "BS in Econ" .
+<http://rdfs.org/resume-rdf/cv.rdfs#id1> <http://rdfs.org/resume-rdf/cv.rdfs#hasSkill> <http://rdfs.org/resume-rdf/cv.rdfs#skill_1> .
+<http://rdfs.org/resume-rdf/cv.rdfs#id1> <http://rdfs.org/resume-rdf/cv.rdfs#hasSkill> <http://rdfs.org/resume-rdf/cv.rdfs#skill_3> .
+<http://rdfs.org/resume-rdf/cv.rdfs#id1> <http://rdfs.org/resume-rdf/cv.rdfs#hasSkill> <http://rdfs.org/resume-rdf/cv.rdfs#skill_5> .
+<http://w3id.org/qualichain#Alberto> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://w3id.org/qualichain#Person> .
+<http://w3id.org/qualichain#Alberto> <http://www.w3.org/2000/01/rdf-schema#label> "Alberto dos Santos Cabrita" .
+<http://w3id.org/qualichain#Alberto> <http://www.w3.org/2000/01/rdf-schema#comment> "Alberto personal info" .
+<http://w3id.org/qualichain#Alberto> <http://w3id.org/qualichain#hasAccomplishment> <http://w3id.org/qualichain#Stock_Exchange_Membership> .
+<http://w3id.org/qualichain#Alberto> <http://w3id.org/qualichain#field> <http://w3id.org/qualichain#Economics> .
+<http://w3id.org/qualichain#Alberto> <http://w3id.org/qualichain#hasResume> <http://rdfs.org/resume-rdf/cv.rdfs#id1> .
+<http://w3id.org/qualichain#Alberto> <http://rdfs.org/resume-rdf/cv.rdfs#gender> "Male" .
+<http://w3id.org/qualichain#Alberto> <http://rdfs.org/resume-rdf/cv.rdfs#hasDriversLicense> "true" .
+<http://rdfs.org/resume-rdf/cv.rdfs#id2> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://rdfs.org/resume-rdf/cv.rdfs#CV> .
+<http://rdfs.org/resume-rdf/cv.rdfs#id2> <http://www.w3.org/2000/01/rdf-schema#label> "Example CV 2" .
+<http://rdfs.org/resume-rdf/cv.rdfs#id2> <http://www.w3.org/2000/01/rdf-schema#comment> "No comment" .
+<http://rdfs.org/resume-rdf/cv.rdfs#id2> <http://rdfs.org/resume-rdf/cv.rdfs#aboutPerson> <http://w3id.org/qualichain#Joaquim> .
+<http://rdfs.org/resume-rdf/cv.rdfs#id2> <http://rdfs.org/resume-rdf/cv.rdfs#cvTitle> "Joaquims CV" .
+<http://rdfs.org/resume-rdf/cv.rdfs#id2> <http://rdfs.org/resume-rdf/cv.rdfs#hasDescription> "Interests and hobbies" .
+<http://rdfs.org/resume-rdf/cv.rdfs#id2> <http://rdfs.org/resume-rdf/cv.rdfs#hasWorkHistory> "Imgursa" .
+<http://rdfs.org/resume-rdf/cv.rdfs#id2> <http://rdfs.org/resume-rdf/cv.rdfs#hasEducation> "12th grade" .
+<http://rdfs.org/resume-rdf/cv.rdfs#id2> <http://rdfs.org/resume-rdf/cv.rdfs#hasSkill> <http://rdfs.org/resume-rdf/cv.rdfs#skill_2> .
+<http://w3id.org/qualichain#Joaquim> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://w3id.org/qualichain#Person> .
+<http://w3id.org/qualichain#Joaquim> <http://www.w3.org/2000/01/rdf-schema#label> "Joaquim Cabral" .
+<http://w3id.org/qualichain#Joaquim> <http://www.w3.org/2000/01/rdf-schema#comment> "Joaquim personal info" .
+<http://w3id.org/qualichain#Joaquim> <http://w3id.org/qualichain#hasAccomplishment> <http://w3id.org/qualichain#10_years_working_at_X_company> .
+<http://w3id.org/qualichain#Joaquim> <http://w3id.org/qualichain#field> <http://w3id.org/qualichain#Metallurgy> .
+<http://w3id.org/qualichain#Joaquim> <http://w3id.org/qualichain#hasResume> <http://rdfs.org/resume-rdf/cv.rdfs#id2> .
+<http://w3id.org/qualichain#Joaquim> <http://rdfs.org/resume-rdf/cv.rdfs#gender> "Male" .
+<http://w3id.org/qualichain#Joaquim> <http://rdfs.org/resume-rdf/cv.rdfs#hasDriversLicense> "false" .
+<http://rdfs.org/resume-rdf/cv.rdfs#id3> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://rdfs.org/resume-rdf/cv.rdfs#CV> .
+<http://rdfs.org/resume-rdf/cv.rdfs#id3> <http://www.w3.org/2000/01/rdf-schema#label> "Example CV 3" .
+<http://rdfs.org/resume-rdf/cv.rdfs#id3> <http://www.w3.org/2000/01/rdf-schema#comment> "Some Comment" .
+<http://rdfs.org/resume-rdf/cv.rdfs#id3> <http://rdfs.org/resume-rdf/cv.rdfs#aboutPerson> <http://w3id.org/qualichain#Guilherme> .
+<http://rdfs.org/resume-rdf/cv.rdfs#id3> <http://rdfs.org/resume-rdf/cv.rdfs#cvTitle> "Guilherme CV" .
+<http://rdfs.org/resume-rdf/cv.rdfs#id3> <http://rdfs.org/resume-rdf/cv.rdfs#hasDescription> "Etc" .
+<http://rdfs.org/resume-rdf/cv.rdfs#id3> <http://rdfs.org/resume-rdf/cv.rdfs#hasEducation> "BS in Automation" .
+<http://rdfs.org/resume-rdf/cv.rdfs#id3> <http://rdfs.org/resume-rdf/cv.rdfs#hasSkill> <http://rdfs.org/resume-rdf/cv.rdfs#skill_2> .
+<http://rdfs.org/resume-rdf/cv.rdfs#id3> <http://rdfs.org/resume-rdf/cv.rdfs#hasSkill> <http://rdfs.org/resume-rdf/cv.rdfs#skill_3> .
+<http://rdfs.org/resume-rdf/cv.rdfs#id3> <http://rdfs.org/resume-rdf/cv.rdfs#hasSkill> <http://rdfs.org/resume-rdf/cv.rdfs#skill_4> .
+<http://w3id.org/qualichain#Guilherme> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://w3id.org/qualichain#Person> .
+<http://w3id.org/qualichain#Guilherme> <http://www.w3.org/2000/01/rdf-schema#label> "Guilherme Belo" .
+<http://w3id.org/qualichain#Guilherme> <http://www.w3.org/2000/01/rdf-schema#comment> "Guilherme personal info" .
+<http://w3id.org/qualichain#Guilherme> <http://w3id.org/qualichain#hasResume> <http://rdfs.org/resume-rdf/cv.rdfs#id3> .
+<http://w3id.org/qualichain#Guilherme> <http://rdfs.org/resume-rdf/cv.rdfs#gender> "Male" .
+<http://w3id.org/qualichain#Guilherme> <http://rdfs.org/resume-rdf/cv.rdfs#hasDriversLicense> "true" .
+<http://w3id.org/qualichain#Economics> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://w3id.org/qualichain#CompetenceArea> .
+<http://w3id.org/qualichain#Economics> <http://www.w3.org/2000/01/rdf-schema#label> "Focus on accounting...etc" .
+<http://w3id.org/qualichain#Metallurgy> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://w3id.org/qualichain#CompetenceArea> .
+<http://w3id.org/qualichain#Metallurgy> <http://www.w3.org/2000/01/rdf-schema#label> "Expertise in soldering...etc" .
+<http://w3id.org/qualichain#Stock_Exchange_Membership> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> "qc:Membership" .
+<http://w3id.org/qualichain#10_years_working_at_X_company> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> "qc:Experience" .
+<http://w3id.org/saro#Job1> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://w3id.org/saro#JobPosting> .
+<http://w3id.org/saro#Job1> <http://www.w3.org/2000/01/rdf-schema#label> "Data Scientist Required" .
+<http://w3id.org/saro#Job1> <http://www.w3.org/2000/01/rdf-schema#comment> "Job Post for a university in Colorado" .
+<http://w3id.org/saro#Job1> <http://w3id.org/saro#describes> "Need someone to do xyz" .
+<http://w3id.org/saro#Job1> <http://schema.org/employmentType> "6 month period" .
+<http://w3id.org/saro#Job1> <http://w3id.org/saro#advertisedIn> "Data Science" .
+<http://w3id.org/saro#Job1> <http://schema.org/occupationalCategory> "Science Team Leader" .
+<http://w3id.org/saro#Job1> <http://schema.org/listingOrganization> <http://schema.org/Merquer_inc> .
+<http://w3id.org/saro#Job1> <http://schema.org/hiringOrganization> <http://schema.org/USCL> .
+<http://w3id.org/saro#Job1> <http://schema.org/jobLocation> <http://schema.org/City_Z_in_Colorado> .
+<http://w3id.org/saro#Job1> <http://w3id.org/saro#needsSkill> <http://rdfs.org/resume-rdf/cv.rdfs#skill_1> .
+<http://w3id.org/saro#Job1> <http://w3id.org/saro#needsSkill> <http://rdfs.org/resume-rdf/cv.rdfs#skill_3> .
+<http://w3id.org/saro#Job2> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://w3id.org/saro#JobPosting> .
+<http://w3id.org/saro#Job2> <http://www.w3.org/2000/01/rdf-schema#label> "AVG Construction Team Coordinator" .
+<http://w3id.org/saro#Job2> <http://www.w3.org/2000/01/rdf-schema#comment> "Manage a team of workers building AVG automatons for factory work" .
+<http://w3id.org/saro#Job2> <http://w3id.org/saro#describes> "Manage schedules, material orders and work posts for the different workers working in your section" .
+<http://w3id.org/saro#Job2> <http://schema.org/employmentType> "One year contract with possibility of renovation" .
+<http://w3id.org/saro#Job2> <http://w3id.org/saro#advertisedIn> "Automation" .
+<http://w3id.org/saro#Job2> <http://schema.org/occupationalCategory> "Team Coordinator/Manager" .
+<http://w3id.org/saro#Job2> <http://schema.org/listingOrganization> <http://schema.org/Merquer_inc> .
+<http://w3id.org/saro#Job2> <http://schema.org/hiringOrganization> <http://schema.org/Imgursa> .
+<http://w3id.org/saro#Job2> <http://schema.org/jobLocation> <http://schema.org/Guia> .
+<http://w3id.org/saro#Job2> <http://w3id.org/saro#needsSkill> <http://rdfs.org/resume-rdf/cv.rdfs#skill_2> .
+<http://w3id.org/saro#Job2> <http://w3id.org/saro#needsSkill> <http://rdfs.org/resume-rdf/cv.rdfs#skill_3> .
+<http://w3id.org/saro#Job2> <http://w3id.org/saro#needsSkill> <http://rdfs.org/resume-rdf/cv.rdfs#skill_4> .
+<http://w3id.org/saro#Job3> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://w3id.org/saro#JobPosting> .
+<http://w3id.org/saro#Job3> <http://www.w3.org/2000/01/rdf-schema#label> "Salary manager for Company X" .
+<http://w3id.org/saro#Job3> <http://www.w3.org/2000/01/rdf-schema#comment> "Company X requires a salary manager urgently" .
+<http://w3id.org/saro#Job3> <http://w3id.org/saro#describes> "The job requires that the candidate be able to manage employees salaries, making sure there is a fair distribuition of company resources with enough overhead for expansion" .
+<http://w3id.org/saro#Job3> <http://schema.org/employmentType> "Indefinite time contract" .
+<http://w3id.org/saro#Job3> <http://w3id.org/saro#advertisedIn> "Management" .
+<http://w3id.org/saro#Job3> <http://schema.org/occupationalCategory> "Senior Accounting Expert" .
+<http://w3id.org/saro#Job3> <http://schema.org/listingOrganization> <http://schema.org/Jason_co> .
+<http://w3id.org/saro#Job3> <http://schema.org/hiringOrganization> <http://schema.org/Imgursa> .
+<http://w3id.org/saro#Job3> <http://schema.org/jobLocation> <http://schema.org/Guia> .
+<http://w3id.org/saro#Job3> <http://w3id.org/saro#needsSkill> <http://rdfs.org/resume-rdf/cv.rdfs#skill_1> .
+<http://w3id.org/saro#Job3> <http://w3id.org/saro#needsSkill> <http://rdfs.org/resume-rdf/cv.rdfs#skill_3> .
+<http://w3id.org/saro#Job3> <http://w3id.org/saro#needsSkill> <http://rdfs.org/resume-rdf/cv.rdfs#skill_5> .
+<http://w3id.org/saro#Job6-9c978e28-d8ab-454f-ae9b-f316c8d421d0> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://w3id.org/saro#JobPosting> .
+<http://w3id.org/saro#Job6-9c978e28-d8ab-454f-ae9b-f316c8d421d0> <http://www.w3.org/2000/01/rdf-schema#label> "Job6" .
+<http://w3id.org/saro#Job6-9c978e28-d8ab-454f-ae9b-f316c8d421d0> <http://w3id.org/saro#describes> "desc6" .
+<http://w3id.org/saro#Job6-9c978e28-d8ab-454f-ae9b-f316c8d421d0> <rdfs:comment> "desc6" .
+<http://w3id.org/saro#Job6-9c978e28-d8ab-454f-ae9b-f316c8d421d0> <http://w3id.org/qualichain#requiresExperience> "skill6" .
+<http://w3id.org/saro#Job6-9c978e28-d8ab-454f-ae9b-f316c8d421d0> <saro:requiresSkill> "skill6" .

@@ -54,9 +54,12 @@ public class Matching {
 	//TODO: Order cvs by Score
 	public static HashMap<String, Integer> getAllCvMatches(JobPosting job){
 		scores = new HashMap<String ,Integer>();
+		int score = 0;
 		List<CV> allCVs = CV.getCVs();
 		for(CV cv : allCVs) {
-			scores.put(cv.getURI(), getScore(job, cv));
+			score = getScore(job, cv);
+			if(score > 0)
+				scores.put(cv.getURI(), score);
 		}
 		
 		return scores;
@@ -72,27 +75,24 @@ public class Matching {
 	private static int getScore(JobPosting job, CV cv) {
 		int score = 0;
 		List<Skill> requirements = job.getSkillReq();
-		Skill toCompare;
-		Skill jobReq;
 		for(Skill req: requirements) {
-			jobReq = Skill.getSkill(req.getUri());
-			if(cv.hasSkill(jobReq.getLabel())) {
+			if(cv.hasSkill(req.getLabel())) {
 				score += 1;
 			}
 			else {
 				List<Skill> cvSkills = cv.getSkills();
 				for(Skill skill : cvSkills) {
-					score += getSkillWeight(jobReq, skill);
+					score += getSkillWeight(req, skill);
 				}
 			}	
 		}
 		
-		List<String> Caprequirements = job.getCapabilityReq();
+		List<Course> Caprequirements = job.getCapabilityReq();
 		
-		for(String req :Caprequirements) {
-			List<String> courses = cv.getCourses();
-			for(String i : courses) {
-				if(i.equalsIgnoreCase(req)) {
+		for(Course req :Caprequirements) {
+			List<Course> courses = cv.getCourses();
+			for(Course i : courses) {
+				if(i.getLabel().equalsIgnoreCase(req.getLabel())) {
 					score += 1;
 				}
 				else
@@ -100,12 +100,12 @@ public class Matching {
 			}
 		}
 		
-		List<String> Exprequirements = job.getExpertiseReq();
+		List<Education> Exprequirements = job.getExpertiseReq();
 		
-		for(String req : Exprequirements) {
-			List<String> education = cv.getEducation();
-			for(String i : education) {
-				if(i.equalsIgnoreCase(req)) {
+		for(Education req : Exprequirements) {
+			List<Education> education = cv.getEducation();
+			for(Education i : education) {
+				if(i.getLabel().equalsIgnoreCase(req.getLabel())) {
 					score += 1;
 				}
 				else
@@ -114,12 +114,12 @@ public class Matching {
 			}
 		}
 		
-		List<String> Knwrequirements = job.getKnowledgeReq();
+		List<WorkHistory> Knwrequirements = job.getKnowledgeReq();
 		
-		for(String req : Knwrequirements) {
-			List<String> workHistory = cv.getWorkHistory();
-			for(String i : workHistory) {
-				if(i.equalsIgnoreCase(req)) {
+		for(WorkHistory req : Knwrequirements) {
+			List<WorkHistory> workHistory = cv.getWorkHistory();
+			for(WorkHistory i : workHistory) {
+				if(i.getLabel().equalsIgnoreCase(req.getLabel())) {
 					score += 1;
 				}
 				else
@@ -144,46 +144,51 @@ public class Matching {
 		String reqSkillPriority = jobReq.getPriorityLevel();
 		String cvSkillProficiency = toCompare.getProficiencyLevel();
 		
-		//Switch with score association for each case, greater, equals and lower than
-		switch(reqSkillPriority) {
-			case "High" :
-				score += 3;
-				break;
-			case "Medium" :
-				score += 2;
-				break;
-			case "Low" :
-				score += 1;
-			default :
-				break;
-		}
 		
-		if(reqSkillProficiency.equalsIgnoreCase(cvSkillProficiency) ) {
-			score += 1;
-		}
-		else {
-			switch (reqSkillProficiency) {
-				//Need the possibilities of proficiencies to compare
-				case "Novice":
+		if(reqSkillPriority != null) {
+			//Switch with score association for each case, greater, equals and lower than
+			switch(reqSkillPriority) {
+				case "High" :
+					score += 3;
+					break;
+				case "Medium" :
 					score += 2;
 					break;
-				case "Junior":
-					if(!cvSkillProficiency.equalsIgnoreCase("Novice"))
+				case "Low" :
+					score += 1;
+				default :
+					break;
+			}
+		}
+		
+		if(reqSkillProficiency != null && cvSkillProficiency != null) {
+			if(reqSkillProficiency.equalsIgnoreCase(cvSkillProficiency) ) {
+				score += 1;
+			}
+			else {
+				switch (reqSkillProficiency) {
+					//Need the possibilities of proficiencies to compare
+					case "Basic":
 						score += 2;
-					else
+						break;
+					case "Junior":
+						if(!cvSkillProficiency.equalsIgnoreCase("Novice"))
+							score += 2;
+						else
+							score -=1;
+						break;
+					case "Senior":
+						if(cvSkillProficiency.equalsIgnoreCase("Expert"))
+							score += 2;
+						else
+							score -=1;
+						break;
+					case "Expert":
 						score -=1;
-					break;
-				case "Senior":
-					if(cvSkillProficiency.equalsIgnoreCase("Expert"))
-						score += 2;
-					else
-						score -=1;
-					break;
-				case "Expert":
-					score -=1;
-					break;
-				default:
-					break;
+						break;
+					default:
+						break;
+				}
 			}
 		}
 		
@@ -191,7 +196,6 @@ public class Matching {
 		
 		return score;
 	}
-	
 	
 	
 	

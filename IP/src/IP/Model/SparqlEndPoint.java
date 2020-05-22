@@ -70,7 +70,7 @@ public class SparqlEndPoint {
 		//Create a new RDF Graph to a Graph Store.
 		//Delete an RDF graph from a Graph Store.
 	public static String update(String query) {
-//		System.out.println(query);
+		System.out.println(query);
 		return sendQuery("update", query);
 
 		//HTTPrequest request = new HTTPrequest(REQUEST_PATH + "update");		
@@ -88,7 +88,6 @@ public class SparqlEndPoint {
 	//Triple CRUD queries////////////////////////////////////
 	public static String insertTriple(String triple, String header) {
 		String query = header + " INSERT DATA { " + triple + "\n }";
-		System.out.println(query);
 		return update(query);
 	}
 
@@ -142,6 +141,18 @@ public class SparqlEndPoint {
 		+ " WHERE {"
 		+ "	?subject rdf:type " + ClassType +" ."  
 		+ " } ";
+
+		return query(query);
+	}
+
+	// Find instances by class with a label
+	public static String getInstancesByLabel(String Label) {
+	
+		String query = QUERYHEADER  
+		+ " SELECT ?subject ?predicate ?object "
+		+ "WHERE {"
+		+ " ?subject rdfs:label \"" +Label+ "\"  " 
+		+ " } LIMIT 1";
 
 		return query(query);
 	}
@@ -244,6 +255,16 @@ public class SparqlEndPoint {
 					+ "	" + URI + " " + property + " ?object ." 
 					+ " } ";
 			return query(query);
+		}
+		
+		public static String deleteObjectByUri(String URI) {
+			System.out.println(URI);
+			String query = QUERYHEADER
+					+ " DELETE "
+					+ " WHERE {"
+					+ " " + URI  + "?predicate ?object ."
+					+ "}";
+			return update(query);
 		}
 		
 	///CRUD from RDF file???//////////////////////////////////////////
@@ -398,7 +419,7 @@ public class SparqlEndPoint {
 	//////////////////////////////////////////////////////
 	//Send SPARQL query through HTTP GET request to the Sparql end-point
 	private static String sendQuery(String type, String query) {
-		System.out.println("path:"+REQUEST_PATH);
+//		System.out.println("path:"+REQUEST_PATH);
 		HTTPrequest request = new HTTPrequest(REQUEST_PATH + type);		
 		
 		request.addRequestProperty("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");

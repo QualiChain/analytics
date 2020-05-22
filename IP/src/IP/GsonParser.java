@@ -5,6 +5,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.StringWriter;
+import java.util.List;
 import java.util.UUID;
 
 import com.google.gson.Gson;
@@ -42,7 +43,7 @@ public class GsonParser {
     public JobPosting toJobPosting(String data) {
 
         JobPosting p = g.fromJson(data, JobPosting.class);
-
+        System.out.println("Request Parsed");
         String uri = "job-" + UUID.randomUUID();
         //ModelData modelD = new ModelData();
         //modelD.addPropertyToResource(modelD, resURI, propURI, prop_value);
@@ -52,14 +53,15 @@ public class GsonParser {
 
         jobpost.addProperty(RDF.type, model.createProperty(jobpostURI + "JobPosting"));
         // jobpost.addProperty(model.createProperty("rdfs:label"),p.getLabel());
-        jobpost.addProperty(RDFS.label, p.getLabel());
-        jobpost.addProperty(model.createProperty("rdfs:comment"), p.getJobDescription());
-        jobpost.addProperty(model.createProperty(jobpostURI+"describes"), p.getJobDescription());
-
+        if (p.getLabel()!=null) jobpost.addProperty(RDFS.label, p.getLabel());
+        if (p.getJobDescription()!=null) jobpost.addProperty(model.createProperty("rdfs:comment"), p.getJobDescription());
+        if (p.getJobDescription()!=null) jobpost.addProperty(model.createProperty(jobpostURI+"describes"), p.getJobDescription());
         
         for (Skill skill : p.getSkillReq()) {
-            jobpost.addProperty(model.createProperty("saro:requiresSkill"),skill.getLabel());
-            jobpost.addProperty(model.createProperty(QualiChainURI + "requiresExperience"), skill.getLabel());
+            if (skill.getLabel()!=null){
+                jobpost.addProperty(model.createProperty("saro:requiresSkill"),skill.getLabel());
+                jobpost.addProperty(model.createProperty(QualiChainURI + "requiresExperience"), skill.getLabel());
+            }
         }
         
         System.out.println("Jobposting created:"+uri);
@@ -67,7 +69,7 @@ public class GsonParser {
 
     }
 
-    public void toCV(String data) {
+    public CV toCV(String data) {
         
         CV p = g.fromJson(data, CV.class);
 
@@ -78,14 +80,28 @@ public class GsonParser {
 
         cv.addProperty(RDF.type, model.createProperty(cvURI + "cv"));
         // cv.addProperty(model.createProperty("rdfs:label"),p.getLabel());
-        cv.addProperty(RDFS.label, p.getLabel());
-        cv.addProperty(model.createProperty("rdfs:comment"), p.getDescription());
+        if (p.getLabel()!=null)      
+            cv.addProperty(RDFS.label, p.getLabel());
+        if (p.getDescription()!=null)
+            cv.addProperty(model.createProperty("rdfs:comment"), p.getDescription());
+        if (p.getPersonURI()!=null)
+            cv.addProperty(model.createProperty("cv:aboutPerson"), p.getPersonURI());
 
         for (Skill skill : p.getSkills()) {
-            cv.addProperty(model.createProperty(QualiChainURI + "refersToAccomplishment"),skill.getLabel());
-            cv.addProperty(model.createProperty(QualiChainURI + "refersToExperience"), skill.getLabel());
+            if (skill.getLabel()!=null){
+                cv.addProperty(model.createProperty(QualiChainURI + "refersToAccomplishment"),skill.getLabel());
+                cv.addProperty(model.createProperty(QualiChainURI + "refersToExperience"), skill.getLabel());
+            }
         }
 
+        return p;
+    }
+    
+    public Person toPerson(String data) {
+        Person p = g.fromJson(data, Person.class);
+        String uri = "person-" + UUID.randomUUID();
+        p.setURI(uri);
+        return p;
     }
 
     public void SavetoFile(String filename) {
