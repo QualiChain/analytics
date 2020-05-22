@@ -29,16 +29,16 @@ public class JobPosting extends RDFObject {
 //	private String Label;
 //	//Seniority Level in the comment section of JobPosting
 //	private String Comment;
-	private String JobDescription;
-	private String ContractType;
-	private String Sector;
-	private String Occupation;
-	private String ListingOrganization;
-	private String HiringOrganization;
-	private String JobLocation;
+	private String jobDescription;
+	private String contractType;
+	private String sector;
+	private String occupation;
+	private String listingOrganization;
+	private String hiringOrganization;
+	private String jobLocation;
 	private String startDate;
 	private String endDate;
-	private String SeniorityLevel;
+	private String seniorityLevel;
 	//Required Skills URIs
 	private List<String> skillReqURIs;
 	//Required Skills
@@ -70,16 +70,16 @@ public class JobPosting extends RDFObject {
 //		this.URI = prefix+id;
 //		this.Label = label;
 //		this.Comment = comment;
-		this.JobDescription = jobDescription;
-		this.ContractType= contractType;
-		this.Sector = sector;
-		this.Occupation = occupation;
-		this.ListingOrganization = listingOrg;
-		this.HiringOrganization = hiringOrg;
-		this.JobLocation = jobLoc;
+		this.jobDescription = jobDescription;
+		this.contractType= contractType;
+		this.sector = sector;
+		this.occupation = occupation;
+		this.listingOrganization = listingOrg;
+		this.hiringOrganization = hiringOrg;
+		this.jobLocation = jobLoc;
 		this.startDate = startDate;
 		this.endDate = endDate;
-		this.SeniorityLevel = seniorityLevel;
+		this.seniorityLevel = seniorityLevel;
 		
 		if(skillReq == null) {
 			this.skillReq = new ArrayList<Skill>();
@@ -113,59 +113,59 @@ public class JobPosting extends RDFObject {
 	
     
     public String getJobDescription() {
-    	return JobDescription;
+    	return jobDescription;
     }
     
     public void setJobDescription(String description) {
-    	this.JobDescription = description;
+    	this.jobDescription = description;
     }
     
     public String getContractType() {
-    	return ContractType;
+    	return contractType;
     }
     
     public void setContractType(String contractType) {
-    	this.ContractType = contractType;
+    	this.contractType = contractType;
     }
     
     public String getSector() {
-    	return Sector;
+    	return sector;
     }
     
     public void setSector(String sector) {
-    	this.Sector = sector;
+    	this.sector = sector;
     }
     
     public String getOccupation() {
-    	return Occupation;
+    	return occupation;
     }
     
     public void setOccupation(String occupation) {
-    	this.Occupation = occupation;
+    	this.occupation = occupation;
     }
     
     public String getListingOrg() {
-    	return ListingOrganization;
+    	return listingOrganization;
     }
     
     public void setListingOrg(String listingOrg) {
-    	this.ListingOrganization = listingOrg;
+    	this.listingOrganization = listingOrg;
     }
     
     public String getHiringOrg() {
-    	return HiringOrganization;
+    	return hiringOrganization;
     }
     
     public void setHiringOrg(String hiringOrg) {
-    	this.HiringOrganization = hiringOrg;
+    	this.hiringOrganization = hiringOrg;
     }
     
-    public String getJobLocation() {
-    	return JobLocation;
+    public String getjobLocation() {
+    	return jobLocation;
     }
     
-    public void setJobLocation(String jobLoc) {
-    	this.JobLocation = jobLoc;
+    public void setjobLocation(String jobLoc) {
+    	this.jobLocation = jobLoc;
     }
     
     public String getStartDate() {
@@ -184,12 +184,12 @@ public class JobPosting extends RDFObject {
     	this.endDate = endDate;
     }
     
-    public String getSeniorityLevel() {
-    	return SeniorityLevel;
+    public String getseniorityLevel() {
+    	return seniorityLevel;
     }
     
-    public void setSeniorityLevel(String SeniorityLevel) {
-    	this.SeniorityLevel = SeniorityLevel;
+    public void setseniorityLevel(String seniorityLevel) {
+    	this.seniorityLevel = seniorityLevel;
     }
     
     public List<Skill> getSkillReq(){
@@ -253,44 +253,44 @@ public class JobPosting extends RDFObject {
     	super.save();
     	Triple triple;
         
-        if(JobDescription != null) {
-            triple = new Triple(getURI(), "saro:describes", JobDescription);
+        if(jobDescription != null) {
+            triple = new Triple(getURI(), "saro:describes", jobDescription);
             SparqlEndPoint.insertPropertyValue(triple);	
         }
         
-        if(ContractType != null) {
-            triple = new Triple(getURI(), schemaPrefix +  "employmentType", ContractType);
+        if(contractType != null) {
+            triple = new Triple(getURI(), schemaPrefix +  "employmentType", contractType);
             SparqlEndPoint.insertPropertyValue(triple);
         }
         
-        if(Sector != null) {
-        	triple = new Triple(getURI(), "saro:advertisedIn", Sector);
+        if(sector != null) {
+        	triple = new Triple(getURI(), "saro:advertisedIn", sector);
             SparqlEndPoint.insertPropertyValue(triple);
         }
         
-        if(Occupation != null) {
-        	triple = new Triple(getURI(), schemaPrefix + "occupationalCategory", Occupation);
+        if(occupation != null) {
+        	triple = new Triple(getURI(), schemaPrefix + "occupationalCategory", occupation);
     		SparqlEndPoint.insertPropertyValue(triple);
     	}
         
-        if(ListingOrganization != null) {
+        if(listingOrganization != null) {
         	//Not sure if it should be an object or a simple value
 //        	triple = new Triple(getURI(), schemaPrefix + "listingOrganization", schemaPrefix + ListingOrganization);
 //    		SparqlEndPoint.insertTriple(triple);
-    		triple = new Triple(getURI(), schemaPrefix + "listingOrganization", ListingOrganization);
+    		triple = new Triple(getURI(), schemaPrefix + "listingOrganization", listingOrganization);
     		SparqlEndPoint.insertPropertyValue(triple);
     	}
         
-        if(HiringOrganization != null) {
+        if(hiringOrganization != null) {
         	//Not sure if it should be an object or a simple value
-//        	triple = new Triple(getURI(), schemaPrefix + "hiringOrganization", schemaPrefix +  HiringOrganization);
+//        	triple = new Triple(getURI(), schemaPrefix + "hiringOrganization", schemaPrefix +  hiringOrganization);
 //    		SparqlEndPoint.insertTriple(triple);
-    		triple = new Triple(getURI(), schemaPrefix + "hiringOrganization", HiringOrganization);
+    		triple = new Triple(getURI(), schemaPrefix + "hiringOrganization", hiringOrganization);
     		SparqlEndPoint.insertPropertyValue(triple);
     	}
         
-        if(JobLocation != null) {
-        	triple = new Triple(getURI(), schemaPrefix + "jobLocation",  JobLocation);
+        if(jobLocation != null) {
+        	triple = new Triple(getURI(), schemaPrefix + "jobLocation",  jobLocation);
     		SparqlEndPoint.insertPropertyValue(triple);
     	}        
         
@@ -304,8 +304,8 @@ public class JobPosting extends RDFObject {
         	SparqlEndPoint.insertPropertyValue(triple);
         }
         
-        if(SeniorityLevel != null) {
-        	triple = new Triple(getURI(), prefix + "level", SeniorityLevel);
+        if(seniorityLevel != null) {
+        	triple = new Triple(getURI(), prefix + "level", seniorityLevel);
         	SparqlEndPoint.insertPropertyValue(triple);
         }
         
@@ -529,7 +529,7 @@ public class JobPosting extends RDFObject {
 //                	System.out.println("Job location: " + jobLoc);
                 	if(jobLoc.contains("/"))
                 		jobLoc = jobLoc.substring(jobLoc.lastIndexOf("/") + 1);
-                	jp.setJobLocation(jobLoc);
+                	jp.setjobLocation(jobLoc);
                 	break;
 
                 case "requiresCapability":
@@ -568,7 +568,7 @@ public class JobPosting extends RDFObject {
                 	
                 case "level": 
                 	String level = object;
-                	jp.setSeniorityLevel(level);
+                	jp.setseniorityLevel(level);
                 	break;
                 	
                 default:

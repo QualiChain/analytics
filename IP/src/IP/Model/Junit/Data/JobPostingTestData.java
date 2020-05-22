@@ -13,9 +13,9 @@ public class JobPostingTestData {
 	
 	
 	public JobPostingTestData(){
-		JPs.add(new JobPosting("Job1", "Test JobPosting 1", "JobPosting Comment 1", "Job Description 1", "Contract Description 1",
-				"Sector 1", "Job Position Name 1", "Listing Organization 1", "Hiring Organization 1", "Location 1", "StartDate1", "EndDate1",
-				 null, null, null, null, null));
+		JPs.add(new JobPosting("Job1", "Test JobPosting 1", "JobPosting Comment 1", "Job Description 1", "full-time",
+				"Sector 1", "Job Position Name 1", "Listing Organization 1", "Hiring Organization 1", "Location 1", "2020-03-11", "2022-03-11",
+				"senior_level", null, null, null, null));
 		JPs.add(new JobPosting("Job2", "Test JobPosting 2", "JobPosting Comment 2", "Job Description 2", "Contract Description 2",
 				"Sector 1", "Job Position Name 2", "Listing Organization 1", "Hiring Organization 2", "Location 2", "StartDate2", "EndDate2",
 				null, null, null, null, null));

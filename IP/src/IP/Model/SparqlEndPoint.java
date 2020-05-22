@@ -47,7 +47,8 @@ public class SparqlEndPoint {
 			"prefix schema: <http://schema.org/> \r\n" + 
 			"prefix xml: <http://www.w3.org/XML/1998/namespace> \r\n" + 
 			"prefix xsd: <http://www.w3.org/2001/XMLSchema#> \r\n" + 
-			"prefix cv: <http://rdfs.org/resume-rdf/cv.rdfs#> ";
+			"prefix cv: <http://rdfs.org/resume-rdf/cv.rdfs#> \r\n" + 
+			"prefix foaf: <http://xmlns.com/foaf/spec/> ";
 	
 	public static String REQUEST_PATH;
 	

@@ -10,6 +10,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.jena.query.QuerySolution;
 import org.apache.jena.query.ResultSet;
 import org.apache.jena.query.ResultSetFactory;
+import org.apache.jena.rdf.model.RDFNode;
 import org.apache.jena.rdf.model.Resource;
 import org.cyberborean.rdfbeans.annotations.RDF;
 import org.cyberborean.rdfbeans.annotations.RDFBean;
@@ -30,201 +31,201 @@ import com.google.gson.JsonObject;
 public class Person extends RDFObject {
     private static final String ClassType ="qc:Person";  
     public static final String prefix = "qc:";
-    private String Name;
-    private String SurName;
-    private String Gender;
-    private String PhoneNumber;
-    private String Email;
+    private String name;
+    private String surname;
+    private String gender;
+    private String phoneNumber;
+    private String email;
     //Like a linkedin page or a blog for reference work for example
-    private String PersonalPage;
-    private String Nationality;
+    private String personalPage;
+    private String nationality;
     //Not sure what ontology to use for the address
-    private String Address;
-    private boolean DriversLicense;
-    private String CVURI;
+    private String address;
+    private boolean driversLicense;
+    private String cvURI;
     //Describe what the area of interest is or the area of expertise in a field?
-    private String CompetenceArea;
-    private String CompetenceAreaDescription;
-    private String Role;
-    private List<String> Qualifications;
-    private List<String> Experiences;
-    private List<String> Memberships;
-    private List<String> Publications;
-    private List<String> Accomplishments;
-    private List<Application> JobApplications;
+    private String competenceArea;
+    private String competenceAreaDescription;
+    private String role;
+    private List<String> qualifications;
+    private List<String> experiences;
+    private List<String> memberships;
+    private List<String> publications;
+    private List<String> accomplishments;
+    private List<Application> jobApplications;
     
     
   //TODO: Add constructors for different cases if found necessary
     public Person() {
     	super(ClassType, prefix);
-    	Qualifications = new ArrayList<>();
-    	Experiences = new ArrayList<>();
-    	Memberships = new ArrayList<>();
-    	Publications = new ArrayList<>();
-    	Accomplishments = new ArrayList<>();
-    	JobApplications = new ArrayList<>();
+    	qualifications = new ArrayList<>();
+    	experiences = new ArrayList<>();
+    	memberships = new ArrayList<>();
+    	publications = new ArrayList<>();
+    	accomplishments = new ArrayList<>();
+    	jobApplications = new ArrayList<>();
     }
     
-    public Person(String id, String name, String surName, String comment, String gender, String phoneNum,
+    public Person(String id, String name, String surname, String comment, String gender, String phoneNum,
     		String email, String personalPage, String nationality, String address, boolean driversLicense,
     		String cvUri, String competenceArea, String competenceAreaDesc, String role, List<String> qualif,
     		List<String> exp, List<String> member, List<String> pubs, List<String> accomp) {
-    	super(ClassType, prefix, id, name + " " + surName, comment);
-    	this.Name = name;
-    	this.SurName = surName;
-    	this.Gender = gender;
-    	this.PhoneNumber = phoneNum;
-    	this.Email = email;
-    	this.PersonalPage = personalPage;
-    	this.Nationality = nationality;
-    	this.Address = address;
-    	this.DriversLicense = driversLicense;
-    	this.CVURI = cvUri;
-    	this.CompetenceArea = competenceArea;
-    	this.CompetenceAreaDescription = competenceAreaDesc;
-    	this.Role = role;
-    	this.Qualifications = qualif;
-    	if(Qualifications == null)
-    		Qualifications = new ArrayList<>();
+    	super(ClassType, prefix, id, name + " " + surname, comment);
+    	this.name = name;
+    	this.surname = surname;
+    	this.gender = gender;
+    	this.phoneNumber = phoneNum;
+    	this.email = email;
+    	this.personalPage = personalPage;
+    	this.nationality = nationality;
+    	this.address = address;
+    	this.driversLicense = driversLicense;
+    	this.cvURI = cvUri;
+    	this.competenceArea = competenceArea;
+    	this.competenceAreaDescription = competenceAreaDesc;
+    	this.role = role;
+    	this.qualifications = qualif;
+    	if(qualifications == null)
+    		qualifications = new ArrayList<>();
     	
-    	this.Experiences = exp;
-    	if(Experiences == null)
-    		Experiences = new ArrayList<>();
+    	this.experiences = exp;
+    	if(experiences == null)
+    		experiences = new ArrayList<>();
     	
-    	this.Memberships = member;
-    	if(Memberships == null)
-    		Memberships = new ArrayList<>();
+    	this.memberships = member;
+    	if(memberships == null)
+    		memberships = new ArrayList<>();
     	
-    	this.Publications = pubs;
-    	if(Publications == null)
-    		Publications = new ArrayList<>();
+    	this.publications = pubs;
+    	if(publications == null)
+    		publications = new ArrayList<>();
     	
-    	this.Accomplishments = accomp;
-    	if(Accomplishments == null)
-    		Accomplishments = new ArrayList<>();
+    	this.accomplishments = accomp;
+    	if(accomplishments == null)
+    		accomplishments = new ArrayList<>();
     	
-    	this.JobApplications = new ArrayList<>();
+    	this.jobApplications = new ArrayList<>();
     }
     
     public String getName() {
-    	return Name;
+    	return name;
     }
     
     public void setName(String name) {
-    	this.Name = name;
+    	this.name = name;
     }
     
-    public String getSurName() {
-    	return SurName;
+    public String getsurname() {
+    	return surname;
     }
     
-    public void setSurName(String surName) {
-    	this.SurName = surName;
+    public void setsurname(String surname) {
+    	this.surname = surname;
     }
     
     public String getGender() {
-    	return this.Gender;
+    	return this.gender;
     }
     
     public void setGender(String gender) {
-    	this.Gender = gender;
+    	this.gender = gender;
     }
     
     public String getAddress() {
-    	return this.Address;
+    	return this.address;
     }
     
     public void setAddress(String address) {
-    	this.Address = address;
+    	this.address = address;
     }
     
     public boolean getDriversLicense() {
-    	return this.DriversLicense;
+    	return this.driversLicense;
     }
     
     //Should be a boolean value, not string, maybe restricting the String to true or false is easier though
     public void setDriversLicense(boolean driversLicense) {
-    	this.DriversLicense = driversLicense;
+    	this.driversLicense = driversLicense;
     }
     
     public String getCVURI() {
-    	return CVURI;
+    	return cvURI;
     }
     
     public void setCVURI(String CVURI) {
-    	this.CVURI = "cv:" + CVURI;
+    	this.cvURI = "cv:" + CVURI;
     }
     
     public String getCompetenceArea() {
-    	return CompetenceArea;
+    	return competenceArea;
     }
     
     public void setCompetenceArea(String competenceArea) {
-    	this.CompetenceArea = competenceArea;
+    	this.competenceArea = competenceArea;
     }
     
     public String getCompetenceAreaDescription() {
-    	return this.CompetenceAreaDescription;
+    	return this.competenceAreaDescription;
     }
     
     public void setCompetenceAreaDescription(String competenceAreaDescription) {
-    	this.CompetenceAreaDescription = competenceAreaDescription;
+    	this.competenceAreaDescription = competenceAreaDescription;
     }
     
     public String getRole() {
-    	return this.Role;
+    	return this.role;
     }
     
     public void setRole(String role) {
-    	this.Role = role;
+    	this.role = role;
     }
     
     public List<String> getQualifications(){
-    	return Qualifications;
+    	return qualifications;
     }
     
     public void addQualification(String qualification) {
-    	this.Qualifications.add(qualification);
+    	this.qualifications.add(qualification);
     }
     
     public List<String> getExperiences(){
-    	return Experiences;
+    	return experiences;
     }
     
     public void addExperience(String experience) {
-    	this.Experiences.add(experience);
+    	this.experiences.add(experience);
     }
     
     public List<String> getMembership(){
-    	return Memberships;
+    	return memberships;
     }
     
     public void addMembership(String membership) {
-    	this.Memberships.add(membership);
+    	this.memberships.add(membership);
     }
     
     public List<String> getPublications(){
-    	return Publications;
+    	return publications;
     }
     
     public void addPublication(String publication) {
-    	this.Publications.add(publication);
+    	this.publications.add(publication);
     }
     
     public List<String> getAccomplishments(){
-    	return Accomplishments;
+    	return accomplishments;
     }
     
     public void addAccomplishment(String accomplishment) {
-    	this.Accomplishments.add(accomplishment);
+    	this.accomplishments.add(accomplishment);
     }
     
     public List<Application> getApplications(){
-    	return JobApplications;
+    	return jobApplications;
     }
     
     public void addJobApplication(Application app) {
-    	this.JobApplications.add(app);
+    	this.jobApplications.add(app);
     }
     
 	public void Save() throws Exception {
@@ -234,22 +235,27 @@ public class Person extends RDFObject {
 		//TODO: Double check foaf ontology for first and last name
 		//foaf:name is a junction of name surname and title
 		//could add title such as MD PHD and so on
-		if(Name != null) {
-			triple = new Triple(getURI(), "foaf:firstName", Name);
+		if(name != null) {
+			triple = new Triple(getURI(), "foaf:firstName", name);
 			SparqlEndPoint.insertPropertyValue(triple);
 		}
 		
-		if(SurName != null) {
-			triple = new Triple(getURI(), "foaf:lastName", SurName);
+		if(surname != null) {
+			triple = new Triple(getURI(), "foaf:lastName", surname);
 			SparqlEndPoint.insertPropertyValue(triple);
 		}
 		
-        if(Gender != null) {
-            triple = new Triple(getURI(), "cv:gender", Gender);
+		if(role != null) {
+			triple = new Triple(getURI(), "foaf:title", role);
+			SparqlEndPoint.insertPropertyValue(triple);
+		}
+		
+        if(gender != null) {
+            triple = new Triple(getURI(), "cv:gender", gender);
             SparqlEndPoint.insertPropertyValue(triple);	
         }
         
-        if(DriversLicense) {
+        if(driversLicense) {
             triple = new Triple(getURI(), "cv:hasDriversLicense", "true");
             SparqlEndPoint.insertPropertyValue(triple);
         }
@@ -258,30 +264,30 @@ public class Person extends RDFObject {
             SparqlEndPoint.insertPropertyValue(triple);	
         }
         
-        if(CVURI != null) {
-        	triple = new Triple(getURI(), "qc:hasResume", CVURI);
+        if(cvURI != null) {
+        	triple = new Triple(getURI(), "qc:hasResume", cvURI);
             SparqlEndPoint.insertTriple(triple);	
         }
         
-        if(CompetenceArea != null) {
-        	triple = new Triple("qc:" + CompetenceArea, "rdf:type", "qc:CompetenceArea");
+        if(competenceArea != null) {
+        	triple = new Triple("qc:" + competenceArea, "rdf:type", "qc:CompetenceArea");
     		SparqlEndPoint.insertTriple(triple);
     		
-    		triple = new Triple(getURI(), "qc:field", "qc:" + CompetenceArea);
+    		triple = new Triple(getURI(), "qc:field", "qc:" + competenceArea);
             SparqlEndPoint.insertTriple(triple);
         }
         
-        if(CompetenceArea != null && CompetenceAreaDescription != null) {
-    		triple = new Triple("qc:" + CompetenceArea, "rdfs:label", CompetenceAreaDescription);
+        if(competenceArea != null && competenceAreaDescription != null) {
+    		triple = new Triple("qc:" + competenceArea, "rdfs:label", competenceAreaDescription);
     		SparqlEndPoint.insertPropertyValue(triple);	
         }
         
-        if(Nationality != null) {
-        	triple = new Triple(getURI(), "cv:hasNationality", Nationality);
+        if(nationality != null) {
+        	triple = new Triple(getURI(), "cv:hasNationality", nationality);
         	SparqlEndPoint.insertPropertyValue(triple);
         }
         
-        for(String qualification : Qualifications) {
+        for(String qualification : qualifications) {
         	triple = new Triple(getURI(), "qc:hasAccomplishment", prefix + qualification);
         	SparqlEndPoint.insertTriple(triple);
         	
@@ -289,7 +295,7 @@ public class Person extends RDFObject {
         	SparqlEndPoint.insertPropertyValue(triple);
         }
         
-        for(String experience : Experiences) {
+        for(String experience : experiences) {
         	triple = new Triple(getURI(), "qc:hasAccomplishment", prefix + experience);
         	SparqlEndPoint.insertTriple(triple);
         	
@@ -297,7 +303,7 @@ public class Person extends RDFObject {
         	SparqlEndPoint.insertPropertyValue(triple);
         }
         
-        for(String membership : Memberships) {
+        for(String membership : memberships) {
         	triple = new Triple(getURI(), "qc:hasAccomplishment", prefix + membership);
         	SparqlEndPoint.insertTriple(triple);
         	
@@ -305,7 +311,7 @@ public class Person extends RDFObject {
         	SparqlEndPoint.insertPropertyValue(triple);
         }
         
-        for(String publication : Publications) {
+        for(String publication : publications) {
         	triple = new Triple(getURI(), "qc:hasAccomplishment", prefix + publication);
         	SparqlEndPoint.insertTriple(triple);
         	
@@ -313,7 +319,7 @@ public class Person extends RDFObject {
         	SparqlEndPoint.insertPropertyValue(triple);
         }
         
-        for(Application app: JobApplications) {
+        for(Application app: jobApplications) {
         	triple = new Triple(getURI(), "qc:hasAppliedTo", app.getURI());
         	SparqlEndPoint.insertTriple(triple);
         }
@@ -419,72 +425,75 @@ public class Person extends RDFObject {
             //System.out.println("predicate: "+predicate);
 
             Resource res= soln.getResource("predicate");
+            
+            RDFNode Onode = soln.get("object");
+            String object="";
+            if (Onode.isResource()) {
+                object = String.valueOf(soln.getResource("object"));
+            }
+            else{
+                object = String.valueOf(soln.getLiteral("object"));   
+            }
 
             switch (res.getLocalName()) {
             	
                 case "type":
-                    String type = String.valueOf(soln.getResource("object"));   
+                    String type = object;   
 //                    System.out.println("type: "+type);
                     break;
 
                 case "label":
-                    String label = String.valueOf(soln.getLiteral("object"));   
-//                    System.out.println("label: " + label);
-                    person.setLabel(label);
+                    person.setLabel(object);
                     break;
                     
                 case "firstName":
-                	String name = String.valueOf(soln.getLiteral("object")); 
-                	person.setName(name);
+                	person.setName(object);
                 	break;
 
                 case "lastName":
-                	String surName = String.valueOf(soln.getLiteral("object")); 
-                	person.setSurName(surName);
+                	person.setsurname(object);
+                	break;
+                	
+                case "title":
+                	person.setRole(object);
                 	break;
                 	
                 case "gender":
-                	String gender = String.valueOf(soln.getLiteral("object"));  
 //                	System.out.println("gender: " + gender);
-                	person.setGender(gender);
+                	person.setGender(object);
                 	break;
             
-                case "hasDriversLicense":
-                	String license = String.valueOf(soln.getLiteral("object"));  
+                case "hasDriversLicense": 
 //                	System.out.println("hasDriversLicense: " + license);
-                	if(license.equals("true"))
+                	if(object.equals("true"))
                 		person.setDriversLicense(true);
-                	else if(license.equals("false"))
+                	else if(object.equals("false"))
                 		person.setDriversLicense(false);	
                 	break;
                 	
                 case "hasResume":
-                	String resumeURI = String.valueOf(soln.getResource("object"));  
-                	if(resumeURI.contains("#"))
-                		resumeURI = resumeURI.substring(resumeURI.indexOf("#") + 1);
+                	if(object.contains("#"))
+                		object = object.substring(object.indexOf("#") + 1);
 //                	System.out.println("hasResume: " + resumeURI);
-                	person.setCVURI(resumeURI);
+                	person.setCVURI(object);
                 	break;
                 	
                 case "field":
-                	String competenceArea = String.valueOf(soln.getResource("object"));  
-                	if(competenceArea.contains("#"))
-                		competenceArea = competenceArea.substring(competenceArea.indexOf("#") + 1);
+                	if(object.contains("#"))
+                		object = object.substring(object.indexOf("#") + 1);
 //                	System.out.println("Competence Area: " + competenceArea);
-                	person.setCompetenceArea(competenceArea);
+                	person.setCompetenceArea(object);
                 	break;
                 	
 
                 case "hasAccomplishment":
-                	String accomplishment = String.valueOf(soln.getResource("object"));  
 //                	System.out.println("hasAccomplishment: " + accomplishment);
-                	person.addAccomplishment(accomplishment);
+                	person.addAccomplishment(object);
                 	break;
 
                 case "comment":
-                	String comment = String.valueOf(soln.getLiteral("object"));  
 //                	System.out.println("comment : " + comment);
-                	person.setComment(comment);
+                	person.setComment(object);
                 	break;
                           	
                 default:

@@ -13,7 +13,7 @@ public class SkillTestData {
 	int counter = 0;
 	
 	public SkillTestData() {
-		Ss.add(new Skill("Skill_1", "Test Skill 1", null, null, "Skill comment 1"));
+		Ss.add(new Skill("Skill_1", "Test Skill 1", "basic", "high", "Skill comment 1"));
 		Ss.add(new Skill("Skill_2", "Test Skill 2", null, null, "Skill comment 2"));
 		Ss.add(new Skill("Skill_3", "Test Skill 3", null, null, "Skill comment 3"));
 		Ss.add(new Skill("Skill_4", "Test Skill 4", null, null, "Skill comment 4"));

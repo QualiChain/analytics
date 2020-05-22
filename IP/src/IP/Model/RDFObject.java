@@ -19,8 +19,8 @@ public class RDFObject {
 	private String PREFIX = null;
 	private String URI = null;
 	private String ID = null;
-	private String Label = null;
-	private String Comment = null;
+	private String label = null;
+	private String comment = null;
 	
 	/**
 	 * RDFObject simple constructor with rdf type and prefix standard
@@ -46,8 +46,8 @@ public class RDFObject {
 		PREFIX = prefix;
 		URI = PREFIX + id;
 		this.ID = id;
-		this.Label = label;
-		this.Comment = comment;
+		this.label = label;
+		this.comment = comment;
 	}
 	
 	/**
@@ -67,19 +67,19 @@ public class RDFObject {
 	}
 	
 	/**
-	 * Gets RDFObject Label
-	 * @return RDFObject Label
+	 * Gets RDFObject label
+	 * @return RDFObject label
 	 */
 	public String getLabel() {
-		return Label;
+		return label;
 	}
 	
 	/**
-	 * Gets RDFObject Comment
-	 * @return RDFObject Comment
+	 * Gets RDFObject comment
+	 * @return RDFObject comment
 	 */
 	public String getComment() {
-		return Comment;
+		return comment;
 	}
 	
 	/**
@@ -108,19 +108,19 @@ public class RDFObject {
 	}
 	
 	/**
-	 * Sets the Label for the RDFObject
-	 * @param Label String format of the Label to be set as the RDFObject Label
+	 * Sets the label for the RDFObject
+	 * @param label String format of the label to be set as the RDFObject label
 	 */
-	public void setLabel(String Label) {
-		this.Label = Label;
+	public void setLabel(String label) {
+		this.label = label;
 	}
 	
 	/**
 	 * 
-	 * @param Description String format of the Comment to be set as the RDFObject Comment
+	 * @param Description String format of the comment to be set as the RDFObject comment
 	 */
-	public void setComment(String Comment) {
-		this.Comment = Comment;
+	public void setComment(String comment) {
+		this.comment = comment;
 	}
 	
 	
@@ -137,14 +137,14 @@ public class RDFObject {
 		Triple triple = new Triple(URI, "rdf:type", CLASSTYPE);
         SparqlEndPoint.insertTriple(triple);
         
-        if(Label != null) {
-        	triple = new Triple(URI, "rdfs:label", Label);
+        if(label != null) {
+        	triple = new Triple(URI, "rdfs:label", label);
             SparqlEndPoint.insertPropertyValue(triple);
         }
 		
 
-        if(Comment != null) {
-        	triple = new Triple(URI, "rdfs:comment", Comment);
+        if(comment != null) {
+        	triple = new Triple(URI, "rdfs:comment", comment);
             SparqlEndPoint.insertTriple(triple.toPropertyValueString());   
         }
 		

@@ -28,9 +28,9 @@ public class CV extends RDFObject {
 	
     private static final String ClassType ="cv:CV";     
     private static final String prefix ="cv:";     
-    private String Title = null;
-    private String PersonURI = null;
-    private String Description = null;
+    private String title = null;
+    private String personURI = null;
+    private String description = null;
     private String targetSector = null;
     private String otherInfo = null;
     private String expectedSalary = null;
@@ -77,9 +77,9 @@ public class CV extends RDFObject {
     		String desc, String targetSect, String info, String expSalary, String salaryCurrency,
     		List<WorkHistory> workHist, List<Education> educ, List<Course> courses, List<Skill> skills) {
     	super(ClassType, prefix, id, label, comment);
-    	this.Title = title;
-    	this.PersonURI = personUri;
-    	this.Description = desc;
+    	this.title = title;
+    	this.personURI = personUri;
+    	this.description = desc;
     	this.targetSector = targetSect;
     	this.otherInfo = info;
     	this.expectedSalary = expSalary;
@@ -115,27 +115,27 @@ public class CV extends RDFObject {
 
     
     public String getTitle() {
-    	return Title;
+    	return title;
     }
     
     public void setTitle(String title) {
-    	this.Title = title;
+    	this.title = title;
     }
     
     public String getPersonURI() {
-    	return PersonURI;
+    	return personURI;
     }
     
     public void setPersonURI(String personURI) {
-    	this.PersonURI = personURI;
+    	this.personURI = personURI;
     }
     
     public String getDescription() {
-    	return Description;
+    	return description;
     }
     
     public void setDescription(String description) {
-    	this.Description = description;
+    	this.description = description;
     }
     
     public String getTargetSector() {
@@ -279,21 +279,21 @@ public class CV extends RDFObject {
 		Triple triple;
 		super.save();
 		
-        if(Title != null) {
+        if(title != null) {
 	        //Insert CV title
-	        triple = new Triple(getURI(), "cv:cvTitle", Title);
+	        triple = new Triple(getURI(), "cv:cvTitle", title);
 	        SparqlEndPoint.insertPropertyValue(triple);
         }
         
-        if(PersonURI != null) {
+        if(personURI != null) {
 	        //Insert Person CV association
-	        triple = new Triple(getURI(), "cv:aboutPerson", PersonURI);
+	        triple = new Triple(getURI(), "cv:aboutPerson", personURI);
 	        SparqlEndPoint.insertTriple(triple);
         }
         
-        if(Description != null) {
+        if(description != null) {
 	        //Insert CV description
-	        triple = new Triple(getURI(), "cv:hasDescription", Description);
+	        triple = new Triple(getURI(), "cv:hasDescription", description);
 	        SparqlEndPoint.insertPropertyValue(triple);
         }
         
@@ -543,7 +543,7 @@ public class CV extends RDFObject {
     public String getInfo() {
     	return "URI: " + getURI() + "\n" +
     			"Label: " + getLabel() + "\n" + 
-    			"Person: " + PersonURI;
+    			"Person: " + personURI;
     }
 
 }

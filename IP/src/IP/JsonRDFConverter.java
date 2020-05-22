@@ -148,7 +148,7 @@ public class JsonRDFConverter {
         		case "ContractType" :
         			predicate = "schema:employmentType";
         			break;
-        		case "SeniorityLevel" : 
+        		case "seniorityLevel" : 
         			predicate = "rdfs:comment";
         			break;
         		case "Skill" : 

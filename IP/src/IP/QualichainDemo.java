@@ -52,13 +52,13 @@ public class QualichainDemo {
 	private static Level logLevel;
 	
 	private static boolean reset = false; 
-	private static boolean addPrefixes = false; 
+	private static boolean addPrefixes = true; 
 	private static boolean cvTest = false; 
 	private static boolean personTest = false; 
 	private static boolean skillTest = false; 
 	private static boolean jobPostingTest = false; 
 	private static boolean resetAndPostAll = false; 
-	private static boolean generalGetTest = false;
+	private static boolean generalGetTest = true;
 	private static boolean specificGetTest = false; 
 	private static boolean matchingTest = false; 
 	private static boolean fileTest = false; 	
@@ -68,7 +68,6 @@ public class QualichainDemo {
 	
 	//args[0] for level of detail in log, can use args[1] to specify tests to make
 	public static void main(String[] args) throws Exception {
-		
 		
 		//Create new Log handler for the console output
         StreamHandler sh = new StreamHandler(System.err, new TextFormatter());
@@ -107,16 +106,13 @@ public class QualichainDemo {
 		FileLogOutput.setLevel(logLevel);
 		//Set the appropriate level for the Logger
 		Log.setLevel(logLevel);
-		
 		//maybe log all the tests that are about to be executed beforehand
-		Log.info("Executing chosen tests\n");		
-		
-		
+		Log.info("Executing chosen tests\n");	
 		
 		
 		Configuration cnf = new Configuration();
 		cnf.LoadConfiguration();
-
+		
 		if(addPrefixes) {
 			Log.config("ADDING PREFIXES TO FUSEKI TEST");
 			addPrefixes();
@@ -746,7 +742,9 @@ public class QualichainDemo {
 			Log.info("=========================================");
 			Log.info("Person Name: " + person.getName());
 			Log.info("=========================================");
-			Log.info("Person Surname: " + person.getSurName());
+			Log.info("Person Surname: " + person.getsurname());
+			Log.info("=========================================");
+			Log.info("Person Role or Title: " + person.getRole());
 			Log.info("=========================================");
 			Log.info("Person Comment: " + person.getComment());
 			Log.info("=========================================");
@@ -788,7 +786,7 @@ public class QualichainDemo {
 			Log.info("=========================================");
 			Log.info("Job Post Hiring to: " + jp.getHiringOrg());
 			Log.info("=========================================");
-			Log.info("Job Post Work Location: " + jp.getJobLocation());
+			Log.info("Job Post Work Location: " + jp.getjobLocation());
 			Log.info("=========================================");
 			Log.info("Job Post Start Date: " + jp.getStartDate());
 			Log.info("=========================================");

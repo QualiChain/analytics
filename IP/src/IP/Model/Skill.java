@@ -127,14 +127,12 @@ public class Skill extends RDFObject//implements Serializable
 	 */
 	public static Skill getSkill(String URI) {
         String uri = URI;
-        System.out.println(uri);
     	if(!uri.startsWith(prefix) && !uri.startsWith("<http")) {
         	if(uri.startsWith("http"))
         		uri ="<"+ uri + ">";
         	else
         		uri = prefix+uri;
         }
-        System.out.println(uri);
 		String properties = SparqlEndPoint.getAllProperties(uri);
 	    //System.out.println(properties);
         Skill skill = ParseResponseToSkill(properties);
