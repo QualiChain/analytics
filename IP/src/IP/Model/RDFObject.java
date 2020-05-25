@@ -146,7 +146,8 @@ public class RDFObject {
         if(comment != null) {
         	triple = new Triple(URI, "rdfs:comment", comment);
             SparqlEndPoint.insertTriple(triple.toPropertyValueString());   
-        }
+		}
+		
 		
 	}
 	

@@ -47,7 +47,7 @@ public class PersonService {
 			////SparqlEndPoint.insertTriple(parser.toStringData());
 			////SparqlEndPoint.insertTriple(parser.toStringData(),parser.toStringHeader());
 			//SparqlEndPoint.insertTriple(parser.toStringData());
-			person.save();
+			person.Save();
 
 			String response = parser.toString("TTL");
 			return Response.ok(response, MediaType.TEXT_PLAIN).build();
