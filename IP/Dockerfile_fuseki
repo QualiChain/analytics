@@ -8,11 +8,11 @@ RUN mkdir /fuseki
 RUN mkdir /QualiChain
 
 
-RUN wget https://downloads.apache.org/jena/binaries/apache-jena-fuseki-$VERSION.tar.gz -P /tmp \
+RUN wget http://archive.apache.org/dist/jena/binaries/apache-jena-fuseki-$VERSION.tar.gz -P /tmp \
     && tar -zxvf /tmp/apache-jena-fuseki-$VERSION.tar.gz -C /tmp \
     && mv -v /tmp/apache-jena-fuseki-$VERSION/* /fuseki
 
-# RUN wget https://downloads.apache.org/jena/binaries/apache-jena-$VERSION.tar.gz -P /tmp \
+# RUN wget http://archive.apache.org/dist/jena/binaries/apache-jena-$VERSION.tar.gz -P /tmp \
 #    && tar -zxvf /tmp/apache-jena-$VERSION.tar.gz -C /tmp \
 #    && mv -v /tmp/apache-jena-$VERSION/* /jena
 
