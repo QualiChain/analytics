@@ -22,4 +22,4 @@ if you want to use your own SPARQL endpoint, you only need to use the docker ima
 But if you want to use your Fuseki SPARQL endpoint, you need to use both docker images of the Intelligent Profiling server and Fuseki:
 
 
-    - Run docker-compose up --build -d
+    - Run docker-compose up --build --force-recreate -d

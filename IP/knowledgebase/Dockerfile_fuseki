@@ -1,0 +1,35 @@
+FROM openjdk:10
+
+ENV VERSION=3.14.0
+
+RUN mkdir /jena
+RUN mkdir /fuseki
+
+# RUN mkdir /QualiChain
+
+
+RUN wget http://archive.apache.org/dist/jena/binaries/apache-jena-fuseki-$VERSION.tar.gz -P /tmp \
+    && tar -zxvf /tmp/apache-jena-fuseki-$VERSION.tar.gz -C /tmp \
+    && mv -v /tmp/apache-jena-fuseki-$VERSION/* /fuseki
+
+#RUN wget http://archive.apache.org/dist/jena/binaries/apache-jena-$VERSION.tar.gz -P /tmp \
+#    && tar -zxvf /tmp/apache-jena-$VERSION.tar.gz -C /tmp \
+#    && mv -v /tmp/apache-jena-$VERSION/* /jena
+
+COPY knowledgebase/QualiChain_2020-04-27_12-44-49.nq /fuseki/
+#RUN jena/bin/tdbloader2 --loc=/QualiChain /fuseki/QualiChain_2020-04-27_12-44-49.nq
+
+EXPOSE 3030
+
+RUN mkdir /fuseki/run
+RUN mkdir /fuseki/run/databases
+
+COPY knowledgebase/databases/ /fuseki/run/databases/
+
+COPY knowledgebase/QualiChainConfig.ttl /fuseki/QualiChain.ttl
+
+COPY knowledgebase/script_fuseki.sh /
+RUN chmod +x /script_fuseki.sh
+RUN chmod +x /fuseki/fuseki-server
+
+ENTRYPOINT ["/bin/bash", "/script_fuseki.sh"]
