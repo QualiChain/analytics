@@ -39,6 +39,8 @@ public class JobPosting extends RDFObject {
 	private String startDate;
 	private String endDate;
 	private String seniorityLevel;
+	private String expectedSalary;
+	private String salaryCurrency;
 	//Required Skills URIs
 	private List<String> skillReqURIs;
 	//Required Skills
@@ -49,6 +51,7 @@ public class JobPosting extends RDFObject {
 	private List<WorkHistory> workExperienceReq;
 	//match with education and courses?
 	private List<Education> educationReq;
+	private List<Application> jobApplications;
 	
 	//Might have to change according to QualiChain ontology model
 	
@@ -60,11 +63,12 @@ public class JobPosting extends RDFObject {
 		coursesReq = new ArrayList<Course>();
 		workExperienceReq = new ArrayList<WorkHistory>();
 		educationReq = new ArrayList<Education>();
+		jobApplications = new ArrayList<Application>();
 	}
 	
 	public JobPosting(String id, String label,String comment, String jobDescription, String contractType, String sector, String occupation,
-			String listingOrg, String hiringOrg, String jobLoc, String startDate, String endDate, String seniorityLevel,
-			List<Skill> skillReq, List<Course> capReq, List<WorkHistory> knowReq, List<Education> exptReq) {
+			String listingOrg, String hiringOrg, String jobLoc, String startDate, String endDate, String seniorityLevel, String expSalary,
+			String salCur, List<Skill> skillReq, List<Course> capReq, List<WorkHistory> knowReq, List<Education> exptReq) {
 		super(ClassType, prefix, id, label, comment);
 //		this.ID = id;
 //		this.URI = prefix+id;
@@ -80,6 +84,9 @@ public class JobPosting extends RDFObject {
 		this.startDate = startDate;
 		this.endDate = endDate;
 		this.seniorityLevel = seniorityLevel;
+		this.expectedSalary = expSalary;
+		this.salaryCurrency = salCur;
+		
 		
 		if(skillReq == null) {
 			this.skillReq = new ArrayList<Skill>();
@@ -190,6 +197,22 @@ public class JobPosting extends RDFObject {
     
     public void setseniorityLevel(String seniorityLevel) {
     	this.seniorityLevel = seniorityLevel;
+    }
+    
+    public String getExpectedSalary() {
+		return expectedSalary;
+	}
+	
+	public void setExpectedSalary(String expectedSalary) {
+		this.expectedSalary = expectedSalary;
+	}
+    
+    public String getSalaryCurrency() {
+    	return salaryCurrency;
+    }
+    
+    public void setSalaryCurrency(String cur) {
+    	this.salaryCurrency = cur;
     }
     
     public List<Skill> getSkillReq(){
@@ -324,16 +347,19 @@ public class JobPosting extends RDFObject {
         }
         
         for(Course capability : coursesReq) {
+        	capability.Save();
         	triple = new Triple(getURI(), "saro:requiresCapability", capability.getURI());
         	SparqlEndPoint.insertTriple(triple);
         }
         
         for(WorkHistory knowledge : workExperienceReq) {
+        	knowledge.Save();
         	triple = new Triple(getURI(), "saro:requiresKnowledge", knowledge.getURI());
         	SparqlEndPoint.insertTriple(triple);
         }
         
         for(Education expertise : educationReq) {
+        	expertise.Save();
         	triple = new Triple(getURI(), "saro:requiresExpertise", expertise.getURI());
         	SparqlEndPoint.insertTriple(triple);
         }

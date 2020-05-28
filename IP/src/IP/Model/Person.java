@@ -52,7 +52,6 @@ public class Person extends RDFObject {
     private List<String> memberships;
     private List<String> publications;
     private List<String> accomplishments;
-    private List<Application> jobApplications;
     
     
   //TODO: Add constructors for different cases if found necessary
@@ -63,7 +62,6 @@ public class Person extends RDFObject {
     	memberships = new ArrayList<>();
     	publications = new ArrayList<>();
     	accomplishments = new ArrayList<>();
-    	jobApplications = new ArrayList<>();
     }
     
     public Person(String id, String name, String surname, String comment, String gender, String phoneNum,
@@ -104,7 +102,6 @@ public class Person extends RDFObject {
     	if(accomplishments == null)
     		accomplishments = new ArrayList<>();
     	
-    	this.jobApplications = new ArrayList<>();
     }
     
     public String getName() {
@@ -220,13 +217,7 @@ public class Person extends RDFObject {
     	this.accomplishments.add(accomplishment);
     }
     
-    public List<Application> getApplications(){
-    	return jobApplications;
-    }
     
-    public void addJobApplication(Application app) {
-    	this.jobApplications.add(app);
-    }
     
 	public void Save() throws Exception {
 		Triple triple;
@@ -319,10 +310,7 @@ public class Person extends RDFObject {
         	SparqlEndPoint.insertPropertyValue(triple);
         }
         
-        for(Application app: jobApplications) {
-        	triple = new Triple(getURI(), "qc:hasAppliedTo", app.getURI());
-        	SparqlEndPoint.insertTriple(triple);
-        }
+        
 }
 	
     public static List<Person> getPersons(){

@@ -83,15 +83,17 @@ public class MatchingService {
 			int score = scores.get(uri);
 			//if (score > 0) {
 				System.out.println("Cv with URI:" + uri + " has a score of: " + scores.get(uri) + ".");
-			
+				
 				CV cv = CV.getCV(uri);
+				String available = (cv.getApplication()==null) ? "" :  cv.getApplication().getAvailability();
+				String expsalary = (cv.getApplication()==null) ? "" :  cv.getApplication().getExpectedSalary();
 
 				JsonObject jsonPropValue=new JsonObject();
 				jsonPropValue.addProperty("id",uri);
 				jsonPropValue.addProperty("name",cv.getPersonURI());
 				jsonPropValue.addProperty("role","");
-				jsonPropValue.addProperty("available","01/01/2020");
-				jsonPropValue.addProperty("expsalary",cv.getExpectedSalary());
+				jsonPropValue.addProperty("available",available);
+				jsonPropValue.addProperty("expsalary",expsalary);
 				jsonPropValue.addProperty("score",score);
 				jsonResults.add(jsonPropValue);
 			//}

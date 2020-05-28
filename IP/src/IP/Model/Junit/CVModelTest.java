@@ -139,9 +139,7 @@ class CVModelTest {
 				() -> assertEquals(cv1.getCourses(), cv2.getCourses()),
 				() -> assertEquals(cv1.getEducation(), cv2.getEducation()),
 				() -> assertEquals(cv1.getSkills(), cv2.getSkills()),
-				() -> assertEquals(cv1.getWorkHistory(), cv2.getWorkHistory()),
-				() -> assertEquals(cv1.getExpectedSalary(), cv2.getExpectedSalary()),
-				() -> assertEquals(cv1.getSalaryCurrency(), cv2.getSalaryCurrency())
+				() -> assertEquals(cv1.getWorkHistory(), cv2.getWorkHistory())
 		);
 	}
 

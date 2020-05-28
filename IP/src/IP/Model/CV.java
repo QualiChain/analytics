@@ -33,13 +33,12 @@ public class CV extends RDFObject {
     private String description = null;
     private String targetSector = null;
     private String otherInfo = null;
-    private String expectedSalary = null;
-    private String salaryCurrency = null;
     private List<WorkHistory> workHistory;
     private List<Education> education;
     private List<Course> courses;
     private List<Skill> skills;
     private List<String> skillURIs;
+    private Application jobApplication = null;
 
     //TODO: Add remove methods for Lists
     
@@ -75,15 +74,13 @@ public class CV extends RDFObject {
      */
     public CV(String id, String label, String comment, String title, String personUri,
     		String desc, String targetSect, String info, String expSalary, String salaryCurrency,
-    		List<WorkHistory> workHist, List<Education> educ, List<Course> courses, List<Skill> skills) {
+    		List<WorkHistory> workHist, List<Education> educ, List<Course> courses, List<Skill> skills, Application jobApp) {
     	super(ClassType, prefix, id, label, comment);
     	this.title = title;
     	this.personURI = personUri;
     	this.description = desc;
     	this.targetSector = targetSect;
     	this.otherInfo = info;
-    	this.expectedSalary = expSalary;
-    	this.salaryCurrency = salaryCurrency;
     	if(workHist == null) {
     		this.workHistory = new ArrayList<WorkHistory>();
     	}
@@ -110,7 +107,8 @@ public class CV extends RDFObject {
         		this.skillURIs.add(skill.getURI());
         	}
     	}
-    	
+
+    	jobApplication = jobApp;
     }
 
     
@@ -156,22 +154,6 @@ public class CV extends RDFObject {
     
     public void addOtherInfo(String info) {
     	this.otherInfo = this.otherInfo + "\n" + info + "\n";
-    }
-    
-    public String getExpectedSalary() {
-    	return expectedSalary;
-    }
-    
-    public void setExpectedSalary(String salary) {
-    	this.expectedSalary = salary;
-    }
-    
-    public String getSalaryCurrency() {
-    	return salaryCurrency;
-    }
-    
-    public void setSalaryCurrency(String cur) {
-    	this.salaryCurrency = cur;
     }
     
     public List<WorkHistory> getWorkHistory()	{
@@ -273,6 +255,15 @@ public class CV extends RDFObject {
     	return false;
     }
     
+    public Application getApplication(){
+    	return jobApplication;
+    }
+    
+    public void setJobApplication(Application app) {
+    	jobApplication = app;
+    }
+    
+    
 	public void Save() throws Exception {
 
 		//Insert CV
@@ -301,26 +292,7 @@ public class CV extends RDFObject {
 	        triple = new Triple(getURI(), "cv:targetJobDescription", targetSector);
 	        SparqlEndPoint.insertPropertyValue(triple);
         }
-        
-        if(expectedSalary != null || salaryCurrency != null) {
-        	triple = new Triple(getURI() + "_SALARY", "rdf:type", "cv:Target");
-            SparqlEndPoint.insertTriple(triple);
-        }
-
-        if(expectedSalary != null) {
-
-	        triple = new Triple(getURI(), "cv:hasTarget", getURI() + "_SALARY");
-	        SparqlEndPoint.insertTriple(triple);
-	        
-	        triple = new Triple(getURI() + "_SALARY", "cv:targetSalary", expectedSalary);
-	        SparqlEndPoint.insertPropertyValue(triple);
-        }
-        
-        if(salaryCurrency != null) {
-	        triple = new Triple(getURI() + "_SALARY", "cv:targetSalaryCurrency", salaryCurrency);
-	        SparqlEndPoint.insertPropertyValue(triple);
-        }
-        
+             
         if(otherInfo != null) {
 	        triple = new Triple(getURI() , "cv:hasOtherInfo", otherInfo);
 	        SparqlEndPoint.insertPropertyValue(triple);
@@ -352,6 +324,12 @@ public class CV extends RDFObject {
         for(Skill skill : skills) {
         	skill.Save();
         	triple = new Triple(getURI(), "cv:hasSkill", skill.getURI());
+        	SparqlEndPoint.insertTriple(triple);
+        }
+        
+        if(jobApplication != null) {
+        	jobApplication.Save();
+        	triple = new Triple(getURI(), "qc:hasAppliedTo", jobApplication.getURI());
         	SparqlEndPoint.insertTriple(triple);
         }
 
@@ -459,6 +437,19 @@ public class CV extends RDFObject {
                 object = String.valueOf(soln.getLiteral("object"));   
             }
 
+            System.out.println("field:"+res.getLocalName()+". value:"+object);
+
+            /* to repalce the switch
+            try {
+                Field field = CV.class.getField(res.getLocalName());
+                field.set(cv, object); 
+                System.out.println(res.getLocalName()+":"+field.get(cv).toString());
+
+            } catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException e) {
+                e.printStackTrace();
+            }
+            */
+            
             switch (res.getLocalName()) {
                 case "type":
                     String type = object;   
@@ -526,6 +517,9 @@ public class CV extends RDFObject {
                 	cv.addCourse(Course.getCourse(course));
                 	break;
                 	
+                case "hasAppliedTo":
+                	String applicationURI = object;
+                	cv.setJobApplication(Application.getApplication(applicationURI));
                 default:
                     break;
             }

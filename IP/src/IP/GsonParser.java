@@ -14,6 +14,7 @@ import org.apache.jena.rdf.model.Model;
 import org.apache.jena.rdf.model.ModelFactory;
 import org.apache.jena.rdf.model.Resource;
 import org.apache.jena.riot.Lang;
+import org.apache.jena.sparql.vocabulary.FOAF;
 import org.apache.jena.vocabulary.RDF;
 import org.apache.jena.vocabulary.RDFS;
 
@@ -101,6 +102,15 @@ public class GsonParser {
         Person p = g.fromJson(data, Person.class);
         String uri = "person-" + UUID.randomUUID();
         p.setURI(uri);
+        
+        Resource person = model.createResource(uri);
+
+        person.addProperty(RDF.type, model.createProperty(QualiChainURI + "Person"));
+        // jobpost.addProperty(model.createProperty("rdfs:label"),p.getLabel());
+        if (p.getLabel()!=null) person.addProperty(RDFS.label, p.getLabel());
+        if (p.getName()!=null) person.addProperty(FOAF.name, p.getName());
+        if (p.getsurname()!=null) person.addProperty(FOAF.familyName, p.getsurname());
+  
         return p;
     }
 

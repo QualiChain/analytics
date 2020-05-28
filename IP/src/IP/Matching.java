@@ -9,7 +9,10 @@ public class Matching {
 
 	private static HashMap<String, Integer> scores;
 	private static int weight;
-
+	private static final int SKILL_COEFICIENT = 5;
+	private static final int COURSE_COEFICIENT = 10;
+	private static final int EDUCATION_COEFICIENT = 15;
+	private static final int WORKHISTORY_COEFICIENT = 20;
 	
 	/**
 	 * Compares the requisites of a job post to each individual CV's Skills in the Database to generate a score
