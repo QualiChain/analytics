@@ -209,7 +209,7 @@ public class IPServer {
         for (Skill req : reqs) {
             System.out.println("     " + req.getURI());
         }
-        HashMap<String, Integer> scores = Matching.getAllCvMatches(job);
+        HashMap<String, Integer> scores = Matching.getAllCvMatches(job,false);
 
  
  

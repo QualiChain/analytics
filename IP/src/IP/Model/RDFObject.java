@@ -88,14 +88,15 @@ public class RDFObject {
 	 */
 	public void setURI(String URI) {
 		this.URI = URI;
-		if(ID == null) {
-			if(URI.contains(":"))
-				ID = URI.substring(URI.indexOf(":"));
-			else if(URI.contains("#"))
-				ID = URI.substring(URI.indexOf("#"), URI.lastIndexOf(">"));
-			else if(URI.contains("http"))
-				ID = URI.substring(URI.indexOf("http")); //TODO: temp, figure out a way to construct the ID out of this URI format
-		}
+		if(URI.contains("#"))
+			this.URI = PREFIX + URI.substring(URI.indexOf("#")+1, URI.lastIndexOf(">"));
+		if(URI.contains(":"))
+			ID = URI.substring(URI.indexOf(":")+1);
+		else if(URI.contains("#"))
+			ID = URI.substring(URI.indexOf("#")+1, URI.lastIndexOf(">"));
+		else if(URI.contains("http"))
+			ID = URI.substring(URI.indexOf("http")); //TODO: temp, figure out a way to construct the ID out of this URI format
+		
 			
 	}
 	
@@ -128,7 +129,7 @@ public class RDFObject {
 	 * The method saves the data stored in the RDFObject to the server being accessed by the SparqlEndPoint class as RDF triples
 	 * @throws Exception 
 	 */
-	public void save() {
+	public void rootRDFSave() {
 		
 		if(ID == null || URI == null || (!URI.startsWith(PREFIX) && !URI.startsWith("<http"))) {
 			autoGenerateIDURI();
@@ -165,15 +166,24 @@ public class RDFObject {
 		ID ="id" + UUID.randomUUID().toString();
 		URI = PREFIX+ID;
 	}
-
-
-	public static boolean exists(String label){
-		String properties = SparqlEndPoint.getInstancesByLabel(label);
+	
+    public static boolean exists(String label){
+        String properties = SparqlEndPoint.getInstancesByLabel(label);
         String uri = SparqlEndPoint.ParseResponseToURI(properties);
         if (uri !=null)
             return true;
         else
             return false;
-	}
+    }
+
+
+	public static String uri2id(String uri){
+		
+        String id = uri;
+        if(id.contains(":")) {
+            id = id.split(":")[1];
+        }
+		return id;
+    }
 
 }

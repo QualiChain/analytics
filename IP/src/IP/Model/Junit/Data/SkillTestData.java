@@ -13,26 +13,26 @@ public class SkillTestData {
 	int counter = 0;
 	
 	public SkillTestData() {
-		Ss.add(new Skill("Skill_1", "Test Skill 1", "basic", "high", "Skill comment 1"));
-		Ss.add(new Skill("Skill_2", "Test Skill 2", null, null, "Skill comment 2"));
-		Ss.add(new Skill("Skill_3", "Test Skill 3", null, null, "Skill comment 3"));
-		Ss.add(new Skill("Skill_4", "Test Skill 4", null, null, "Skill comment 4"));
-		Ss.add(new Skill("Skill_5", "Test Skill 5", null, null, "Skill comment 5"));
-		Ss.add(new Skill("Skill_6", "Test Skill 6", null, null, "Skill comment 6"));
-		Ss.add(new Skill("Skill_7", "Test Skill 7", null, null, "Skill comment 7"));
-		Ss.add(new Skill("Skill_8", "Test Skill 8", null, null, "Skill comment 8"));
-		Ss.add(new Skill("Skill_9", "Test Skill 9", null, null, "Skill comment 9"));
-		Ss.add(new Skill("Skill_10", "Test Skill 10", null, null, "Skill comment 10"));
-		Ss.add(new Skill("Skill_11", "Test Skill 11", null, null, "Skill comment 11"));
-		Ss.add(new Skill("Skill_12", "Test Skill 12", null, null, "Skill comment 12"));
-		Ss.add(new Skill("Skill_13", "Test Skill 13", null, null, "Skill comment 13"));
-		Ss.add(new Skill("Skill_14", "Test Skill 14", null, null, "Skill comment 14"));
-		Ss.add(new Skill("Skill_15", "Test Skill 15", null, null, "Skill comment 15"));
-		Ss.add(new Skill("Skill_16", "Test Skill 16", null, null, "Skill comment 16"));
-		Ss.add(new Skill("Skill_17", "Test Skill 17", null, null, "Skill comment 17"));
-		Ss.add(new Skill("Skill_18", "Test Skill 18", null, null, "Skill comment 18"));
-		Ss.add(new Skill("Skill_19", "Test Skill 19", null, null, "Skill comment 19"));
-		Ss.add(new Skill("Skill_29", "Test Skill 20", null, null, "Skill comment 20"));
+		Ss.add(new Skill("Skill_1", "Java", "advanced", "high", "Skill comment 1"));
+		Ss.add(new Skill("Skill_2", "Python", "expert", "high", "Skill comment 2"));
+		Ss.add(new Skill("Skill_3", "C++", "basic", "high", "Skill comment 3"));
+		Ss.add(new Skill("Skill_4", "Programing", "basic", "high", "Skill comment 4"));
+		Ss.add(new Skill("Skill_5", "Nodejs", "basic", "high", "Skill comment 5"));
+		Ss.add(new Skill("Skill_6", "Angular", "basic", "high", "Skill comment 6"));
+		Ss.add(new Skill("Skill_7", "Javascript", "basic", "high", "Skill comment 7"));
+		Ss.add(new Skill("Skill_8", "Blockchain", "basic", "high", "Skill comment 8"));
+		Ss.add(new Skill("Skill_9", "PHP", "basic", "high", "Skill comment 9"));
+		Ss.add(new Skill("Skill_10", "C#", "basic", "high", "Skill comment 10"));
+		Ss.add(new Skill("Skill_11", "R", "basic", "high", "Skill comment 11"));
+		Ss.add(new Skill("Skill_12", "Tensorflow", "expert", "high", "Skill comment 12"));
+		Ss.add(new Skill("Skill_13", "Angularjs", "basic", "high", "Skill comment 13"));
+		Ss.add(new Skill("Skill_14", "Machine Learning", "basic", "high", "Skill comment 14"));
+		Ss.add(new Skill("Skill_15", "Neural Network", "advanced", "high", "Skill comment 15"));
+		Ss.add(new Skill("Skill_16", "MySQL", "basic", "high", "Skill comment 16"));
+		Ss.add(new Skill("Skill_17", "Postgresql", "basic", "high", "Skill comment 17"));
+		Ss.add(new Skill("Skill_18", "MongoDB", "basic", "high", "Skill comment 18"));
+		Ss.add(new Skill("Skill_19", "SQL", "basic", "high", "Skill comment 19"));
+		Ss.add(new Skill("Skill_29", "Apache Spark", "advanced", "high", "Skill comment 20"));
 	}
 	
 	public List<Skill> getSkills(){

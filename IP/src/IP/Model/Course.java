@@ -4,6 +4,7 @@ import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.List;
 
 import org.apache.jena.query.QuerySolution;
 import org.apache.jena.query.ResultSet;
@@ -17,7 +18,7 @@ public class Course extends RDFObject {
     private static final String prefix ="cv:"; 
     private String qualification;
     private String developedBy;
-    private ArrayList<String> relatedTo;
+    private List<String> relatedTo = new ArrayList<String>();
 
 	public Course() {
 		super(ClassType, prefix);
@@ -34,6 +35,25 @@ public class Course extends RDFObject {
 	
 	public String getQualification() {
 		return qualification;
+	}
+	
+	public void setDevelopedBy(String dev) {
+		this.developedBy = dev;
+	}
+	
+	public String getDevelopedBy() {
+		return developedBy;
+	}
+	
+	/*
+	 * Use URIs for the relations with the course
+	 */
+	public void addRelatedTo(String related) {
+		this.relatedTo.add(related);
+	}
+	
+	public List<String> getRelatedTo() {
+		return relatedTo;
 	}
 	
 	public static Course getCourse(String URI) {
@@ -86,11 +106,19 @@ public class Course extends RDFObject {
                     crs.setLabel(label);
                     break;
                     
-                case "certificate":
+                case "leadsToQualification":
                 	String certificate = object;  
                 	crs.setQualification(certificate);
                 	break;
-                	
+                case "EducatororTrainer":
+                	String dev = object;
+                	crs.setDevelopedBy(dev);
+                	break;
+                case "relatedTo":
+                	String relatedTo = object;
+                	if(relatedTo.contains("#"))
+                		relatedTo = relatedTo.substring(relatedTo.indexOf("#") + 1);
+                	crs.addRelatedTo(relatedTo);
                 default:
                     break;
             }
@@ -105,14 +133,27 @@ public class Course extends RDFObject {
 	}
 
 	public void Save() {
-		super.save();
+		super.rootRDFSave();
         
         Triple triple;
         
         if(qualification != null) {
         	triple = new Triple(getURI(), "saro:leadsToQualification", qualification);
-        	SparqlEndPoint.insertTriple(triple);
+        	SparqlEndPoint.insertPropertyValue(triple);
         }
+        
+        if(developedBy != null) {
+        	triple = new Triple(getURI(), "saro:EducatororTrainer", developedBy);
+        	SparqlEndPoint.insertPropertyValue(triple);
+        }
+        
+        if(relatedTo != null && relatedTo.size() != 0) {
+        	for(String relation : relatedTo) {
+            	triple = new Triple(getURI(), "saro:relatedTo", relation);
+            	SparqlEndPoint.insertTriple(triple);
+            }
+        }
+        
         
 	}
 

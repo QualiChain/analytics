@@ -36,19 +36,19 @@ public class WorkHistory extends RDFObject {
 		return position;
 	}
 	
-	public void setStartDate(String from) {
+	public void setFrom(String from) {
 		this.from = from;
 	}
 	
-	public String getStartDate() {
+	public String getFrom() {
 		return from;
 	}
 	
-	public void setEndDate(String to) {
+	public void setTo(String to) {
 		this.to = to;
 	}
 	
-	public String getEndDate() {
+	public String getTo() {
 		return to;
 	}
 	
@@ -111,26 +111,28 @@ public class WorkHistory extends RDFObject {
 	                    break;
 	                    
 	                case "comment":
-	                	String comment = object;  
-//	                	System.out.println("comment : " + comment);
+	                	String comment = object; 
 	                	wh.setComment(comment);
 	                	break;
 	                	
 	                case "from":
-	                	String startDate = object;  
-//	                	System.out.println("comment : " + comment);
-	                	wh.setStartDate(startDate);
+	                	String from = object;  
+	                	wh.setFrom(from);
 	                	break;
 	                	
 	                case "to":
-	                	String endDate = object;  
-//	                	System.out.println("comment : " + comment);
-	                	wh.setEndDate(endDate);
+	                	String to = object;  
+	                	wh.setTo(to);
 	                	break;
 	                	
 	                case "employer":
 	                	String employer = object;
 	                	wh.setEmployer(employer);
+	                	break;
+	                case "position":
+	                	String position = object;
+	                	wh.setPosition(position);
+	                	break;
 	                	
 	                default:
 	                    break;
@@ -140,7 +142,7 @@ public class WorkHistory extends RDFObject {
 	}
 
 	public void Save() {
-		super.save();
+		super.rootRDFSave();
         
         Triple triple;
         

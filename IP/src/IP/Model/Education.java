@@ -17,7 +17,7 @@ public class Education extends RDFObject{
     private String title;
     private String from;
     private String to;
-    private String org;
+    private String organisation;
     private String description;
 	
 	public Education() {
@@ -55,12 +55,12 @@ public class Education extends RDFObject{
 		return to;
 	}
 	
-	public void setOrganization(String org) {
-		this.org = org;
+	public void setOrganisation(String organisation) {
+		this.organisation = organisation;
 	}
 	
-	public String getOrganization() {
-		return org;
+	public String getOrganisation() {
+		return organisation;
 	}
 	
 	public void setDescription(String description) {
@@ -134,9 +134,9 @@ public class Education extends RDFObject{
                 	ed.setTo(endDate);
                 	break;
                 	
-                case "organization":
-                	String org = object;  
-                	ed.setOrganization(org);
+                case "organisation":
+                	String organisation = object;  
+                	ed.setOrganisation(organisation);
                 	break;
                 	
                 case "description":
@@ -157,7 +157,7 @@ public class Education extends RDFObject{
 	}
 
 	public void Save() {
-		super.save();
+		super.rootRDFSave();
         
         Triple triple;
         
@@ -176,8 +176,8 @@ public class Education extends RDFObject{
         	SparqlEndPoint.insertPropertyValue(triple);
         }
         
-        if(org != null) {
-        	triple = new Triple(getURI(), "qc:organization", org);
+        if(organisation != null) {
+        	triple = new Triple(getURI(), "qc:organisation", organisation);
         	SparqlEndPoint.insertPropertyValue(triple);
         }
         

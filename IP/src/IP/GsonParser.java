@@ -41,6 +41,11 @@ public class GsonParser {
 
     }
 
+    public Application toApplication(String data) {
+        Application p = g.fromJson(data, Application.class);
+        return p;
+    }
+
     public JobPosting toJobPosting(String data) {
 
         JobPosting p = g.fromJson(data, JobPosting.class);

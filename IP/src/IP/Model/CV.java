@@ -125,7 +125,14 @@ public class CV extends RDFObject {
     }
     
     public void setPersonURI(String personURI) {
-    	this.personURI = personURI;
+        String URI = personURI;
+        if(!URI.startsWith("qc:") && !URI.startsWith("<http")) {
+        	if(URI.startsWith("http"))
+        		URI ="<"+ URI + ">";
+        	else
+        		URI = "qc:"+URI;
+        }
+        this.personURI = URI;
     }
     
     public String getDescription() {
@@ -214,12 +221,27 @@ public class CV extends RDFObject {
     
     
     public boolean hasSkill(String skillLabel){
-    	for(Skill curSkill : skills) {
-    		String label = curSkill.getLabel();
-    		
-    		if(label.equalsIgnoreCase(skillLabel)) {
-    			return true;
-    		}
+        try {
+            for(Skill curSkill : skills) {
+                String label = curSkill.getLabel();
+                
+                if(label.equalsIgnoreCase(skillLabel)) {
+                    return true;
+                }
+            }
+            return false;
+                
+        } catch (Exception e) {
+            return false;
+        }
+    }
+    
+    public boolean hasSkill(Skill skill) {
+    	if(skills.size() != 0) {
+    		for(Skill tmp: skills) {
+        		if(tmp.getURI().equals(skill.getURI()))
+        			return true;
+        	}
     	}
     	return false;
     }
@@ -263,12 +285,17 @@ public class CV extends RDFObject {
     	jobApplication = app;
     }
     
+    //Is not very safe, if the delete succeeds but the Save fails, data will be lost
+    public void update() throws Exception {
+		quickDeleteByURI(getURI());
+		Save();
+	}
     
 	public void Save() throws Exception {
 
 		//Insert CV
 		Triple triple;
-		super.save();
+		super.rootRDFSave();
 		
         if(title != null) {
 	        //Insert CV title
@@ -278,7 +305,12 @@ public class CV extends RDFObject {
         
         if(personURI != null) {
 	        //Insert Person CV association
-	        triple = new Triple(getURI(), "cv:aboutPerson", personURI);
+        	String URI = personURI;
+            if(!(URI.contains("qc:") || URI.contains("<http"))) {
+                URI = "qc:"+URI;
+            }
+            this.setPersonURI(URI);
+	        triple = new Triple(getURI(), "cv:aboutPerson", URI);
 	        SparqlEndPoint.insertTriple(triple);
         }
         
@@ -373,11 +405,23 @@ public class CV extends RDFObject {
         return cv;
     }
     
-    public static CV getCVbyPerson(String name) {
+    public static CV getCVbyPersonURI(String uri) {
+    	String URI = uri;
+    	if(!URI.startsWith("qc:") && !URI.startsWith("<http")) {
+        	if(URI.startsWith("http"))
+        		URI ="<"+ URI + ">";
+        	else
+        		URI = "qc:"+URI;
+		}
+        String SparqlJsonResults = SparqlEndPoint.getInstancesByProperty(CV.ClassType, "cv:aboutPerson", URI );
+        //System.out.println(SparqlJsonResults);
+        List<CV> cvs =  ParseResponse(SparqlJsonResults);
+        return cvs.get(cvs.size()-1);
+    }
 
+    public static CV getCVbyPerson(String name) {
     	Person person = Person.getPersonByName(name);
-    	String SparqlJsonResults = SparqlEndPoint.getInstancesByProperty(CV.ClassType, "cv:aboutPerson", person.getURI() );
-    	return ParseResponse(SparqlJsonResults).get(0);
+    	return getCV(person.getCVURI());
     }
     
     public static CV deleteObject(String URI) {
@@ -437,7 +481,7 @@ public class CV extends RDFObject {
                 object = String.valueOf(soln.getLiteral("object"));   
             }
 
-            System.out.println("field:"+res.getLocalName()+". value:"+object);
+            //System.out.println("field:"+res.getLocalName()+". value:"+object);
 
             /* to repalce the switch
             try {
@@ -486,7 +530,8 @@ public class CV extends RDFObject {
                 	
                 case "hasWorkHistory":
                 	String workHistory = object;  
-//                	System.out.println("Work History: " + workHistory);
+                	if(workHistory.contains("#"))
+                		workHistory = workHistory.substring(workHistory.indexOf("#") + 1);
                 	cv.addWorkHistory(WorkHistory.getWorkHistory(workHistory));
                 	break;
                 	
@@ -506,20 +551,29 @@ public class CV extends RDFObject {
 
                 case "hasEducation":
                 	String education = object;  
-//                	System.out.println("hasEducation: " + education);
+                	if(education.contains("#"))
+                		education = education.substring(education.indexOf("#") + 1);
                 	cv.addEducation(Education.getEducation(education));
                 	break;
                 	
 
                 case "hasCourse":
                 	String course = object;  
-//                	System.out.println("hasCourse: " + course);
+                	if(course.contains("#"))
+                		course = course.substring(course.indexOf("#") + 1);
                 	cv.addCourse(Course.getCourse(course));
                 	break;
                 	
                 case "hasAppliedTo":
                 	String applicationURI = object;
+                	if(applicationURI.contains("#"))
+                		education = applicationURI.substring(applicationURI.indexOf("#") + 1);
                 	cv.setJobApplication(Application.getApplication(applicationURI));
+                	break;
+                case "targetJobDescription":
+                	String sector = object;
+                	cv.setTargetSector(sector);
+                	break;
                 default:
                     break;
             }

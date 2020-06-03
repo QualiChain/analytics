@@ -36,6 +36,7 @@ public class CVService {
 	@Consumes(MediaType.TEXT_PLAIN)
 	@Produces(MediaType.TEXT_PLAIN)
 	public Response CreateCV(String data) {
+		System.out.println(data);
 		GsonParser parser;
 		try {
 			parser = new GsonParser();
@@ -60,13 +61,21 @@ public class CVService {
 	}
 
 	@GET
+	@Path("/cv/{personURI}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public CV GetCV(@PathParam("personURI")String personURI) {
+		CV cv = CV.getCVbyPersonURI(personURI);	
+		return cv;		
+	}
+	/*
+	@GET
 	@Path("/cv/{cvURI}")
 	@Produces(MediaType.APPLICATION_JSON)
 	public CV GetCV(@PathParam("cvURI")String cvURI) {
-		CV cv = CV.getCV(cvURI);
+		CV cv = CV.getCV(cvURI);	
 		return cv;		
 	}
-
+	*/
 	@PUT
 	@Path("/cv/{cvURI}")
 	@Consumes(MediaType.APPLICATION_JSON)

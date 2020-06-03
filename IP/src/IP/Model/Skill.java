@@ -36,7 +36,9 @@ public class Skill extends RDFObject//implements Serializable
 { 	
     private static final String ClassType ="cv:Skill";
     private static final String prefix ="cv:";  
+    //Right now the accepted values for skill proficiency are as such: Basic, Junior, Senior, Expert
     private String proficiencyLevel;
+  //Right now the accepted values for skill priority are as such: Low, Medium, High
     private String priorityLevel;
     
     
@@ -104,7 +106,7 @@ public class Skill extends RDFObject//implements Serializable
      */
 	public void Save() throws Exception {
             
-            super.save();
+            super.rootRDFSave();
             
             Triple triple;
             

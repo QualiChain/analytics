@@ -40,6 +40,8 @@ public class Application extends RDFObject {
 	
 	public void setPersonURI(String PersonURI) {
 		this.personURI = PersonURI;
+		if(PersonURI.contains("#"))
+			this.personURI = prefix + PersonURI.substring(PersonURI.indexOf("#")+1);
 	}
 	
 	public String getJobURI() {
@@ -48,6 +50,8 @@ public class Application extends RDFObject {
 	
 	public void setJobURI(String JobURI) {
 		this.jobURI = JobURI;
+		if(JobURI.contains("#"))
+			this.jobURI = prefix + JobURI.substring(JobURI.indexOf("#")+1);
 	}
 	
 	public String getExpectedSalary() {
@@ -78,7 +82,7 @@ public class Application extends RDFObject {
 		String uri = URI;
         if (!uri.startsWith(prefix) && !uri.startsWith("<http")){
         	if(uri.startsWith("http"))
-        		uri = "<" + uri + ">";
+        		uri = prefix+ uri.substring(uri.indexOf("#")+1);
         	else
         		uri = prefix+URI;
         }
@@ -108,7 +112,7 @@ public class Application extends RDFObject {
             else{
                 object = String.valueOf(soln.getLiteral("object"));   
             }
-
+            
             switch (res.getLocalName()) {
                 case "type":
                     String type = object;   
@@ -123,8 +127,6 @@ public class Application extends RDFObject {
                 	String comment = object; 
                 	app.setComment(comment);
                 	break;
-
-                	
                 case "appliedBy":
                 	String personURI = object;
                 	app.setPersonURI(personURI);
@@ -155,7 +157,7 @@ public class Application extends RDFObject {
 
 	public void Save() throws Exception {
 		Triple triple;
-		super.save();
+		super.rootRDFSave();
 		
 		if(personURI != null) {
 			triple = new Triple(getURI(), "qc:appliedBy", personURI);
@@ -165,6 +167,9 @@ public class Application extends RDFObject {
 		if(jobURI != null) {
 			triple = new Triple(getURI(), "qc:appliedFor", jobURI);
 			SparqlEndPoint.insertTriple(triple);
+			JobPosting jp = JobPosting.getJobPosting(jobURI);
+			jp.apply(this);
+			jp.Save();
 		}
 		
 		if(expectedSalary != null) {

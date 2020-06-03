@@ -53,6 +53,12 @@ public class PersonTestData {
 		Ps.add(new Person("Person14", "FirstName14", "Surname14", "Comment 14", "female", "543219876", "Person14@knowledgeBiz.pt",
 				"personalPageURL14.pt", "German", "Address14", true, "cv:id14", "CompetenceArea14", "CompetenceAreaDesc14", "Employee",
 				null, null, null, null, null));
+		Ps.add(new Person("p98173918", "Alberto", "Cabrita", "Alberto personal info", "Male", "922283384", "asc.99@jimail.com", "albertoS.com", "Portuguese", null, true,
+				"cv:id98173918", null, null, "employee", null, null, null, null, null));
+		Ps.add(new Person("p17623814", "Joaquim", "Cabral", "Joaquim personal info", "Male", "922245684", "jc.92@jimail.com", "JoJosCentral.com", "Portuguese", null, false,
+				"cv:id17623814", null, null, "employee", null, null, null, null, null));
+		Ps.add(new Person("p57168721", "Guilherme", "Belo", "Guilherme personal info", "Male", "939445684", "ggb.88@jimail.com", "PressFreeN.com", "Portuguese", null, true,
+				"cv:id57168721", null, null, "employee", null, null, null, null, null));
 	}
 	
 	public List<Person> getPersons(){

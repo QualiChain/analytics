@@ -20,6 +20,7 @@ import com.fasterxml.jackson.annotation.JsonRawValue;
 import org.apache.jena.base.Sys;
 
 import IP.GsonParser;
+import IP.Model.Application;
 import IP.Model.JobPosting;
 import IP.Model.SparqlEndPoint;
 
@@ -91,16 +92,34 @@ public class JobpostingService {
 
 	@PUT
 	@Path("/jobs/{jobURI}")
-	@Consumes(MediaType.APPLICATION_JSON)
-	@Produces(MediaType.APPLICATION_JSON)
-	public JobPosting UpdateJob(@PathParam("jobURI")String jobURI) {
-		return null;	
+	@Consumes(MediaType.TEXT_PLAIN)
+	@Produces(MediaType.TEXT_PLAIN)
+	public Response UpdateJob(String data, @PathParam("jobURI")String jobURI) {
+		GsonParser parser = new GsonParser();
+		JobPosting newJob = parser.toJobPosting(data);
+		newJob.setURI(jobURI);
+		try {
+			newJob.update();
+			return Response.ok("job updated", MediaType.APPLICATION_JSON).build();
+		} catch (Exception e) {
+			e.printStackTrace();
+			return Response.status(Response.Status.BAD_REQUEST).entity(e.toString()).build();		
+
+		}
 	}
 	
 	@DELETE
 	@Path("/jobs/{jobURI}")
 	public void DeleteJob(@PathParam("jobURI")String jobURI) {
 		JobPosting.deleteObject(jobURI); 
+	}
+
+	@GET
+	@Path("/jobs/{jobURI}/apply")
+	@Produces(MediaType.APPLICATION_JSON)
+	public List<Application> GetApplicationsforJob(@PathParam("jobURI")String jobURI) {
+		JobPosting job = JobPosting.getJobPosting(jobURI);
+		return job.getApplications();	
 	}
 
 }

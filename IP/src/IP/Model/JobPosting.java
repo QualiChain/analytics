@@ -224,12 +224,17 @@ public class JobPosting extends RDFObject {
     }
     
     public void addSkillReq(String URI) {
-        if(!URI.startsWith("cv:") && !URI.startsWith("<http"))
-            URI = "<" + URI + ">";
+    	String uri = URI;
+    	if(!uri.startsWith("cv:") && !uri.startsWith("<http")) {
+        	if(uri.startsWith("http"))
+        		uri ="<"+ uri + ">";
+        	else
+        		uri = "cv:"+uri;
+		}
 
-        Skill skill = Skill.getSkill(URI);
+        Skill skill = Skill.getSkill(uri);
         skillReq.add(skill);
-        skillReqURIs.add(URI);
+        skillReqURIs.add(uri);
 
     }
     
@@ -269,11 +274,23 @@ public class JobPosting extends RDFObject {
     	this.educationReq.add(expertiseReq);
     }
     
-    
-    
+    public List<Application> getApplications() {
+		return this.jobApplications;
+	}
+
+	public void apply(Application application) {
+		this.jobApplications.add(application);
+	}
+	
+	//Is not very safe, if the delete succeeds but the Save fails, data will be lost
+	public void update() throws Exception {
+		quickDeleteByURI(getURI());
+		Save();
+	}
+
     public void Save() throws Exception {
     	
-    	super.save();
+    	super.rootRDFSave();
     	Triple triple;
         
         if(jobDescription != null) {
@@ -361,6 +378,14 @@ public class JobPosting extends RDFObject {
         for(Education expertise : educationReq) {
         	expertise.Save();
         	triple = new Triple(getURI(), "saro:requiresExpertise", expertise.getURI());
+        	SparqlEndPoint.insertTriple(triple);
+        }
+        
+        for(Application jobApp: jobApplications) {
+        	//not sure if necessary because if the application is on the jobposting it should already have been created by the cv first
+        	if(RDFObject.exists(jobApp.getLabel()))
+        		jobApp.Save();
+        	triple = new Triple(getURI(), "qc:hasJobApplication", jobApp.getURI());
         	SparqlEndPoint.insertTriple(triple);
         }
 
@@ -560,25 +585,29 @@ public class JobPosting extends RDFObject {
 
                 case "requiresCapability":
                 	String reqCapability = object;
-//                	System.out.println("Capability requirement: " + reqCapability);
+                	if(reqCapability.contains("#"))
+                		reqCapability = reqCapability.substring(reqCapability.indexOf("#") + 1);
                 	jp.addCapabilityReq(Course.getCourse(reqCapability));
                 	break;
 
                 case "requiresKnowledge":
                 	String reqKnowledge = object;
-//                	System.out.println("Knowledge requirement: " + reqKnowledge);
+                	if(reqKnowledge.contains("#"))
+                		reqKnowledge = reqKnowledge.substring(reqKnowledge.indexOf("#") + 1);
                 	jp.addKnowledgeReq(WorkHistory.getWorkHistory(reqKnowledge));
                 	break;
 
                 case "requiresExpertise":
                 	String reqExpertise = object;
-//                	System.out.println("Expertise requirement: " + reqExpertise);
+                	if(reqExpertise.contains("#"))
+                		reqExpertise = reqExpertise.substring(reqExpertise.indexOf("#") + 1);
                 	jp.addExpertiseReq(Education.getEducation(reqExpertise));
                 	break;
                 	
                 case "needsSkill":
                 	String reqSkill = object;
-//                	System.out.println("Skill requirement: " + reqSkill);
+                	if(reqSkill.contains("#"))
+                		reqSkill = reqSkill.substring(reqSkill.indexOf("#") + 1);
                 	jp.addSkillReq(reqSkill);
                 	break;
                 	
@@ -595,6 +624,13 @@ public class JobPosting extends RDFObject {
                 case "level": 
                 	String level = object;
                 	jp.setseniorityLevel(level);
+                	break;
+                	
+                case "hasJobApplication":
+                	String jobAppURI = object;
+                	if(jobAppURI.contains("#"))
+                		jobAppURI = jobAppURI.substring(jobAppURI.indexOf("#") + 1);
+                	jp.apply(Application.getApplication(jobAppURI));
                 	break;
                 	
                 default:

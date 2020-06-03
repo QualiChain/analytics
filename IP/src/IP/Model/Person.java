@@ -221,7 +221,7 @@ public class Person extends RDFObject {
     
 	public void Save() throws Exception {
 		Triple triple;
-		super.save();
+		super.rootRDFSave();
         
 		//TODO: Double check foaf ontology for first and last name
 		//foaf:name is a junction of name surname and title
@@ -370,8 +370,10 @@ public class Person extends RDFObject {
 	public static Person getPersonByCV(String cvURI) {
 		String SparqlJsonResults = SparqlEndPoint.getInstancesByProperty(ClassType, "qc:hasResume", cvURI);
 		String uri = SparqlEndPoint.ParseResponseToURI(SparqlJsonResults);
-		
-		return getPerson("<" + uri + ">");
+		if (uri !=null)
+            return getPerson("<" + uri + ">");
+        else
+            return null;
 	}
 	
 	public static Person deleteObject(String URI) {

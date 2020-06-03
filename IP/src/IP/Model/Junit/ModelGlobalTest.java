@@ -73,6 +73,13 @@ class ModelGlobalTest {
 				e.printStackTrace();
 			}
 		}
+		for(JobPosting jp: jps) {
+			try {
+				jp.Save();
+			} catch (Exception e) {
+				System.err.println(e.getMessage());
+			}
+		}
 		for(CV cv: cvs) {
 			try {
 				cv.Save();
@@ -85,13 +92,6 @@ class ModelGlobalTest {
 				p.Save();
 			} catch (Exception e) {
 				e.printStackTrace();
-			}
-		}
-		for(JobPosting jp: jps) {
-			try {
-				jp.Save();
-			} catch (Exception e) {
-				System.err.println(e.getMessage());
 			}
 		}
 		
@@ -160,7 +160,7 @@ class ModelGlobalTest {
 		List<JobPosting> jps = JobPosting.getJobPostings();
 		HashMap<String, Integer> matches;
 		for(JobPosting jp: jps) {
-			matches = Matching.getAllCvMatches(jp);
+			matches = Matching.getAllCvMatches(jp, false);
 			assertFalse(matches.containsValue(0));
 			assertTrue(matches.size() <= cvd.getCvs().size());
 		}
