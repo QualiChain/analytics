@@ -97,7 +97,14 @@ public class JobpostingService {
 	public Response UpdateJob(String data, @PathParam("jobURI")String jobURI) {
 		GsonParser parser = new GsonParser();
 		JobPosting newJob = parser.toJobPosting(data);
-		newJob.setURI(jobURI);
+		String uri = jobURI;
+        if (!uri.startsWith(JobPosting.prefix) && !uri.startsWith("<http")){
+        	if(uri.startsWith("http"))
+        		uri = "<" + uri + ">";
+        	else
+        		uri = JobPosting.prefix+uri;
+        }
+		newJob.setURI(uri);
 		try {
 			newJob.update();
 			return Response.ok("job updated", MediaType.APPLICATION_JSON).build();
