@@ -43,14 +43,27 @@ public class CVTestData {
 				"1100", "Euro", null, null, null, null, new Application("qc:app12", "qc:12", "saro:Job12", "879", "01/01/21", "Euro")));
 		cvs.add(new CV("id13", "Test CV 13", "Comment 13", "CV Title 13", "qc:13", "Description 13", "Sector 3", "Optional info 13",
 				"1600", "USD", null, null, null, null, new Application("qc:app13", "qc:13", "saro:Job1", "577", "01/01/21", "Euro")));
-		cvs.add(new CV("id14", "Test CV 14", "Comment 14", "CV Title 14", "qc:14", "Description 14", "Sector 5", "Optional info 14",
-				"1200", "Euro", null, null, null, null, new Application("qc:app14", "qc:14", "saro:Job2", "3000", "01/01/21", "Euro")));
+		cvs.add(new CV("id14", "Test CV 14", "Comment 14", "CV Title 14", "qc:24", "Description 14", "Sector 5", "Optional info 14",
+				"1200", "Euro", null, null, null, null, new Application("qc:app14", "qc:24", "saro:Job2", "3000", "01/01/21", "Euro")));
 		cvs.add(new CV("id98173918", "Example CV x", "No comment", "Albertos CV", "qc:15", "Things Alberto has done", "Something new", "Is a fast learner",
 				"1000", "Euros", null, null, null, null, new Application("qc:app98173918", "qc:15", "saro:Job18763218", "2508", "01/01/21", "Euro") ));
 		cvs.add(new CV("id17623814", "Example CV y", "No comment", "Joaquims CV", "qc:23", "Interests and hobbies", "Something fresh", "Has a very good work ethic",
 				"780", "Canadian Dollar", null, null, null, null, new Application("qc:app17623814", "qc:23", "saro:Job12987681", "5000", "01/01/21", "Euro") ));
 		cvs.add(new CV("id57168721", "Example CV z", "Some comment", "Guilherme CV", "qc:55", "Etc", "Something challenging", "Very proactive",
 				"900", "Euro", null, null, null, null, new Application("qc:app57168721", "qc:55", "saro:Job198273817", "4355", "01/01/21", "Euro")));
+
+		cvs.add(new CV("id22", "CV for Data Scientists Application", "Comment 14", "CV Title 14", "qc:22", "Description 14", "IT", "Optional info 14",
+				"1200", "Euro", null, null, null, null, new Application("qc:app22", "qc:22", "saro:Job2", "3000", "01/01/21", "Euro")));
+
+		cvs.add(new CV("id25", "Student CV", "Comment", "CV Title 14", "qc:25", "Description 14", "IT", "Optional info 14",
+				"1200", "Euro", null, null, null, null, new Application("qc:app25", "qc:25", "saro:Job2", "3000", "01/01/21", "Euro")));
+
+		cvs.add(new CV("id29", "Software Developer CV", "Software Developer CV", "Software Developer CV", "qc:29", "I am an experinced software Developer.", "IT", "Optional info 14",
+				"1200", "Euro", null, null, null, null, new Application("qc:app29", "qc:29", "saro:Job2", "3000", "01/01/21", "Euro")));
+
+		cvs.add(new CV("id30", "CV", "Comment", "CV Title 14", "qc:30", "Description 14", "IT", "Optional info 14",
+				"1200", "Euro", null, null, null, null, new Application("qc:app30", "qc:30", "saro:Job2", "3000", "01/01/21", "Euro")));
+
 		addCompetencesToCVs();
 	}
 	

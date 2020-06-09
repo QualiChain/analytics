@@ -321,7 +321,7 @@ public class CV extends RDFObject {
         }
         
         if(targetSector != null) {
-	        triple = new Triple(getURI(), "cv:targetJobDescription", targetSector);
+	        triple = new Triple(getURI(), "saro:Sector", targetSector);
 	        SparqlEndPoint.insertPropertyValue(triple);
         }
              
@@ -416,7 +416,10 @@ public class CV extends RDFObject {
         String SparqlJsonResults = SparqlEndPoint.getInstancesByProperty(CV.ClassType, "cv:aboutPerson", URI );
         //System.out.println(SparqlJsonResults);
         List<CV> cvs =  ParseResponse(SparqlJsonResults);
-        return cvs.get(cvs.size()-1);
+        if (cvs.size()>0)
+            return cvs.get(cvs.size()-1);
+        else
+            return null;
     }
 
     public static CV getCVbyPerson(String name) {
@@ -570,7 +573,7 @@ public class CV extends RDFObject {
                 		education = applicationURI.substring(applicationURI.indexOf("#") + 1);
                 	cv.setJobApplication(Application.getApplication(applicationURI));
                 	break;
-                case "targetJobDescription":
+                case "Sector":
                 	String sector = object;
                 	cv.setTargetSector(sector);
                 	break;

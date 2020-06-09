@@ -29,6 +29,7 @@ public class JobPosting extends RDFObject {
 //	private String Label;
 //	//Seniority Level in the comment section of JobPosting
 //	private String Comment;
+	private String creator_id;
 	private String jobDescription;
 	private String contractType;
 	private String sector;
@@ -68,12 +69,13 @@ public class JobPosting extends RDFObject {
 	
 	public JobPosting(String id, String label,String comment, String jobDescription, String contractType, String sector, String occupation,
 			String listingOrg, String hiringOrg, String jobLoc, String startDate, String endDate, String seniorityLevel, String expSalary,
-			String salCur, List<Skill> skillReq, List<Course> capReq, List<WorkHistory> knowReq, List<Education> exptReq) {
+			String salCur, String creator_id, List<Skill> skillReq, List<Course> capReq, List<WorkHistory> knowReq, List<Education> exptReq) {
 		super(ClassType, prefix, id, label, comment);
 //		this.ID = id;
 //		this.URI = prefix+id;
 //		this.Label = label;
 //		this.Comment = comment;
+		this.creator_id = creator_id;
 		this.jobDescription = jobDescription;
 		this.contractType= contractType;
 		this.sector = sector;
@@ -115,9 +117,18 @@ public class JobPosting extends RDFObject {
 			this.educationReq = new ArrayList<Education>();
 		else
 			this.educationReq = exptReq;
+		if(jobApplications == null)
+			this.jobApplications = new ArrayList<Application>();
 		
 	}
 	
+	public String getcreator_id() {
+		return creator_id;
+	}
+	
+	public void setcreator_id(String creator_id) {
+		this.creator_id = creator_id;
+	}
     
     public String getJobDescription() {
     	return jobDescription;
@@ -134,7 +145,7 @@ public class JobPosting extends RDFObject {
     public void setContractType(String contractType) {
     	this.contractType = contractType;
     }
-    
+     
     public String getSector() {
     	return sector;
     }
@@ -258,19 +269,19 @@ public class JobPosting extends RDFObject {
     	this.coursesReq.add(capReq);
     }
     
-    public List<WorkHistory> getKnowledgeReq(){
+    public List<WorkHistory> getworkExperienceReq(){
     	return workExperienceReq;
     }
     
-    public void addKnowledgeReq(WorkHistory KnowledgeReq) {
+    public void addworkExperienceReq(WorkHistory KnowledgeReq) {
     	this.workExperienceReq.add(KnowledgeReq);
     }
     
-    public List<Education> getExpertiseReq(){
+    public List<Education> getEducationReq(){
     	return educationReq;
     }
     
-    public void addExpertiseReq(Education expertiseReq) {
+    public void addEducationReq(Education expertiseReq) {
     	this.educationReq.add(expertiseReq);
     }
     
@@ -292,6 +303,11 @@ public class JobPosting extends RDFObject {
     	
     	super.rootRDFSave();
     	Triple triple;
+    	
+    	if(creator_id != null) {
+    		triple = new Triple(getURI(), "saro:createdBy", creator_id);
+    		SparqlEndPoint.insertPropertyValue(triple);
+    	}
         
         if(jobDescription != null) {
             triple = new Triple(getURI(), "saro:describes", jobDescription);
@@ -351,14 +367,15 @@ public class JobPosting extends RDFObject {
         
         for(Skill skill : skillReq) {
 
+			/*
 			String label=skill.getLabel();
             if (skill.getURI() == null){
 				if (RDFObject.exists(label))
 					skill = Skill.getSkillByLabel(label);
 				else
 					skill.Save(); 
-			}
-			
+			}*/
+			skill.Save();
         	triple = new Triple(getURI(), "saro:needsSkill", skill.getURI());
         	SparqlEndPoint.insertTriple(triple);
         }
@@ -594,14 +611,14 @@ public class JobPosting extends RDFObject {
                 	String reqKnowledge = object;
                 	if(reqKnowledge.contains("#"))
                 		reqKnowledge = reqKnowledge.substring(reqKnowledge.indexOf("#") + 1);
-                	jp.addKnowledgeReq(WorkHistory.getWorkHistory(reqKnowledge));
+                	jp.addworkExperienceReq(WorkHistory.getWorkHistory(reqKnowledge));
                 	break;
 
                 case "requiresExpertise":
                 	String reqExpertise = object;
                 	if(reqExpertise.contains("#"))
                 		reqExpertise = reqExpertise.substring(reqExpertise.indexOf("#") + 1);
-                	jp.addExpertiseReq(Education.getEducation(reqExpertise));
+                	jp.addEducationReq(Education.getEducation(reqExpertise));
                 	break;
                 	
                 case "needsSkill":
@@ -632,6 +649,12 @@ public class JobPosting extends RDFObject {
                 		jobAppURI = jobAppURI.substring(jobAppURI.indexOf("#") + 1);
                 	jp.apply(Application.getApplication(jobAppURI));
                 	break;
+                	
+                case "createdBy":
+                	String creator_id = object;
+//                	if(creatorID.contains("#"))
+//                		creatorID = creatorID.substring(creatorID.indexOf("#") + 1);
+                	jp.setcreator_id(creator_id);
                 	
                 default:
                     break;

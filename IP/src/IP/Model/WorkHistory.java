@@ -15,9 +15,10 @@ public class WorkHistory extends RDFObject {
 	private static final String ClassType ="cv:WorkHistory";
     private static final String prefix ="cv:"; 
     private String position;
-    private String from;
-    private String to;
-    private String employer;
+    private String from;// used for CV
+    private String to;// Ussed for CV
+	private String employer;
+	private String duration;//used for Job Requirments
 	
 	public WorkHistory() {
 		super(ClassType, prefix);

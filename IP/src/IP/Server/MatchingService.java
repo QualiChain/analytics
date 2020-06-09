@@ -47,7 +47,7 @@ public class MatchingService {
 		System.out.println("Job matching request recived for " + jobid);
 		String results = null;
 
-		JobPosting job = JobPosting.getJobPosting(JobPosting.prefix + jobid);
+		JobPosting job = JobPosting.getJobPosting(jobid);
 		if (!(job.equals(null))) {
 			results = matching(job);
 		}
@@ -88,12 +88,16 @@ public class MatchingService {
 
 	@DELETE
 	@Path("/jobs/{jobid}/apply/{userid}")
-	@Consumes(MediaType.APPLICATION_JSON)
-	@Produces(MediaType.APPLICATION_JSON)
 	public void DeleteApplication(@PathParam("jobid") String jobid, @PathParam("userid") String userid) {
+
+		System.out.println(jobid);
+		System.out.println(userid);
 
 		try {
 			CV cv = CV.getCVbyPersonURI(userid);
+			Application app = cv.getApplication();
+			RDFObject.quickDeleteByURI(app.getURI());
+			RDFObject.deleteURIAssociations(app.getURI());
 			cv.setJobApplication(null);
 			cv.Save();
 		} catch (Exception e) {
@@ -108,7 +112,7 @@ public class MatchingService {
         for (Skill req : reqs) {
             System.out.println("     " + req.getURI());
         }
-        HashMap<String, Integer> scores = Matching.getAllCvMatches(job,false);
+        HashMap<String, Integer> scores = Matching.getAllCvMatches(job,true);
 
  
  

@@ -11,10 +11,10 @@ public class Matching {
 
 	private static HashMap<String, Integer> scores;
 	private static int weight;
-	private static final int SKILL_COEFICIENT = 5;
+	private static final int SKILL_COEFICIENT = 10;
 	private static final int COURSE_COEFICIENT = 10;
-	private static final int EDUCATION_COEFICIENT = 15;
-	private static final int WORKHISTORY_COEFICIENT = 20;
+	private static final int EDUCATION_COEFICIENT = 10;
+	private static final int WORKHISTORY_COEFICIENT = 10;
 	
 	/**
 	 * Compares the requisites of a job post to each individual CV's Skills in the Database to generate a score
@@ -61,6 +61,10 @@ public class Matching {
 	public static HashMap<String, Integer> getAllCvMatches(JobPosting job, boolean applied){
 		scores = new HashMap<String ,Integer>();
 		int score = 0;
+		System.out.println("CALCULATING JOB MAX SCORE");
+		int highScore = getJobMaxScore(job);
+		System.out.println("JOBPOSTING SCORE");
+		System.out.println(highScore);
 		List<CV> cvs;
 		List<Application> apps;
 		//If we are looking at applied cvs only we get the cvs that applied for the job and use that list
@@ -76,20 +80,37 @@ public class Matching {
 			cvs = CV.getCVs();
 		
 		for(CV cv : cvs) {
+			System.out.println(cv.getInfo());
 			score = getScore(job, cv);
+			if (score>highScore) score = highScore;
+			System.out.println("CV SCORE");
+			System.out.println(score);
 			if(score > 0)
-				scores.put(cv.getURI(), score);
+				scores.put(cv.getURI(), (score*100)/highScore);
 		}
-		
 		return scores;
 	}
 	
+	private static int getJobMaxScore(JobPosting job) {
+		int score = 0;
+		for(Course cs: job.getCapabilityReq()) {
+			score += 1 * COURSE_COEFICIENT;
+		}
+		for(Education ed: job.getEducationReq()) {
+			score += 1 * EDUCATION_COEFICIENT;
+		}
+		for(WorkHistory wh: job.getworkExperienceReq()) {
+			score += 1 * WORKHISTORY_COEFICIENT;
+		}
+		for(Skill skl: job.getSkillReq()) {
+			score += getSkillWeight(skl,skl) * SKILL_COEFICIENT;
+		}
+		return score;
+	}
+
 	//Generalize to all requirements besides skills, may have to add different more specific classes from a generalized skill class
 	/**
 	 * Calculates a score to determine how well the CV cv fits the requirement for a JobPosting job
-	 * If a requirement matches completely, score goes up by 2 * "requirement coeficient"
-	 * If a requirement matches partially, score goes up by 1 * "requirement coeficient"
-	 * If a requirement does not match, score goes down by 1 * "requirement coeficient"
 	 * If a requirement is a skill, score will be affected by further analysis of the skill's priority and proficiency
 	 * @param job JobPosting class object that will be analyzed for the score calculation
 	 * @param cv CV class object that will be scored according to the job requirements
@@ -117,57 +138,77 @@ public class Matching {
 						}
 					}
 					
-					if(score == tmpScore)
-						score--;
+//					if(score == tmpScore)
+//						score--;
 				}	
 			}
 		}
+		System.out.println("SKILL SCORE");
+		System.out.println(score);
 		
-		
+		boolean hasReq = false;
 		List<Course> Caprequirements = job.getCapabilityReq();
 		if(Caprequirements.size() != 0) {
 			for(Course req :Caprequirements) {
 				List<Course> courses = cv.getCourses();
 				for(Course i : courses) {
-					if(i.getLabel().equalsIgnoreCase(req.getLabel())) {
+					if(i.getQualification().equalsIgnoreCase(req.getQualification()) ||
+							i.getQualification().contains(req.getQualification()) ||
+							req.getQualification().contains(i.getQualification())) {
 						score += 1 * COURSE_COEFICIENT;
+						hasReq = true;
 					}
-					else
-						score -= 1 * COURSE_COEFICIENT;
 				}
+//				if(!hasReq) {
+//					score -= 1;
+//				}
+				hasReq = false;
 			}
 		}
 		
 		
-		List<Education> Exprequirements = job.getExpertiseReq();
+		List<Education> Exprequirements = job.getEducationReq();
 		
 		if(Exprequirements.size() != 0) {
 			for(Education req : Exprequirements) {
 				List<Education> education = cv.getEducation();
 				for(Education i : education) {
-					if(i.getLabel().equalsIgnoreCase(req.getLabel())) {
+					if(i.getTitle().equalsIgnoreCase(req.getTitle())||
+							i.getTitle().contains(req.getTitle()) ||
+							req.getTitle().contains(i.getTitle()) ||
+							i.getDescription().equalsIgnoreCase(req.getDescription())||
+							i.getDescription().contains(req.getDescription()) ||
+							req.getDescription().contains(i.getDescription())) {
 						score += 1 * EDUCATION_COEFICIENT;
+						hasReq = true;
 					}
-					else
-						score -= 1 * EDUCATION_COEFICIENT;
-						
 				}
+//				if(!hasReq) {
+//					score -= 1;
+//				}
+				hasReq = false;
 			}
 		}
 		
 		
-		List<WorkHistory> Knwrequirements = job.getKnowledgeReq();
+		List<WorkHistory> Knwrequirements = job.getworkExperienceReq();
 		
 		if(Knwrequirements.size() != 0) {
 			for(WorkHistory req : Knwrequirements) {
 				List<WorkHistory> workHistory = cv.getWorkHistory();
 				for(WorkHistory i : workHistory) {
-					if(i.getLabel().equalsIgnoreCase(req.getLabel())) {
-						score += 1 + WORKHISTORY_COEFICIENT ;
+					if(i.getPosition().equalsIgnoreCase(req.getPosition())||
+							i.getPosition().contains(req.getPosition()) ||
+							req.getPosition().contains(i.getPosition())) {
+						score += 1 * WORKHISTORY_COEFICIENT ;
+						hasReq = true;
 					}
-					else
-						score -= 1 * WORKHISTORY_COEFICIENT;
+						
 				}
+//				if(!hasReq) {
+//					score -= 1;
+//				}
+				hasReq = false;
 			}
 		}
 		
@@ -201,28 +242,37 @@ public class Matching {
 		//Tries to assess if the two skills are related or not, if they are not related returns 0 immediately
 		//Thought process is the following, if they are the same object it automatically says they are related
 		//And if the skill labels are the same or one of the labels contains the other, then they are related in some way and the method continues
-		if(jobReq != toCompare && !(jobReq.getLabel().equals(toCompare.getLabel()) ||
-									jobReq.getLabel().contains(toCompare.getLabel()) ||
-									toCompare.getLabel().contains(jobReq.getLabel()))) {
+		if(jobReq != toCompare && !(jobReq.getLabel().equalsIgnoreCase(toCompare.getLabel()) ||
+									jobReq.getLabel().toLowerCase().contains(toCompare.getLabel().toLowerCase()) ||
+									toCompare.getLabel().toLowerCase().contains(jobReq.getLabel().toLowerCase()))) {
 			
 			return 0;
 		}
+		String reqSkillProficiency = null;
+		String reqSkillPriority = null;
+		String cvSkillProficiency = null;
+		if(jobReq.getProficiencyLevel() != null) {
+			reqSkillProficiency = jobReq.getProficiencyLevel().toLowerCase();
+		}
+		if(jobReq.getPriorityLevel() != null) {
+			reqSkillPriority = jobReq.getPriorityLevel().toLowerCase();
+		}
+		if(toCompare.getProficiencyLevel() != null) {
+			cvSkillProficiency = toCompare.getProficiencyLevel().toLowerCase();
+		}
 		
-		String reqSkillProficiency = jobReq.getProficiencyLevel();
-		String reqSkillPriority = jobReq.getPriorityLevel();
-		String cvSkillProficiency = toCompare.getProficiencyLevel();
 		
 		
 		if(reqSkillPriority != null) {
 			//Switch with score association for each case, greater, equals and lower than
 			switch(reqSkillPriority) {
-				case "High" :
+				case "high" :
 					score += 3;
 					break;
-				case "Medium" :
+				case "medium" :
 					score += 2;
 					break;
-				case "Low" :
+				case "low" :
 					score += 1;
 				default :
 					break;
@@ -236,31 +286,30 @@ public class Matching {
 			else {
 				switch (reqSkillProficiency) {
 					//Need the possibilities of proficiencies to compare
-					case "Basic":
-						score += 2;
+					case "basic":
+						score += 1;
 						break;
-					case "Junior":
-						if(!cvSkillProficiency.equalsIgnoreCase("Basic"))
-							score += 2;
-						else
-							score -=1;
+					case "junior":
+						if(!cvSkillProficiency.equalsIgnoreCase("basic"))
+							score += 1;
+//						else
+//							score -=1;
 						break;
-					case "Senior":
-						if(cvSkillProficiency.equalsIgnoreCase("Expert"))
-							score += 2;
-						else
-							score -=1;
+					case "advanced":
+						if(cvSkillProficiency.equalsIgnoreCase("expert"))
+							score += 1;
+//						else
+//							score -=1;
 						break;
-					case "Expert":
-						score -=1;
-						break;
+//					case "expert":
+//						score -=1;
+//						break;
 					default:
 						break;
 				}
 			}
 		}
-		
-		//call the model creation method for each triple agglomerate and then use the models for comparison
+	
 		
 		return score;
 	}

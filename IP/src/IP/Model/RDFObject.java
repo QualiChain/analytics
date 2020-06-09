@@ -161,6 +161,10 @@ public class RDFObject {
 		SparqlEndPoint.deleteObjectByUri(URI);
 	}
 	
+	public static void deleteURIAssociations(String URI) {
+		SparqlEndPoint.deleteObjectAssociations(URI);
+	}
+	
 	private void autoGenerateIDURI() {
 
 		ID ="id" + UUID.randomUUID().toString();

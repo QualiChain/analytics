@@ -95,6 +95,8 @@ public class JobpostingService {
 	@Consumes(MediaType.TEXT_PLAIN)
 	@Produces(MediaType.TEXT_PLAIN)
 	public Response UpdateJob(String data, @PathParam("jobURI")String jobURI) {
+		JobPosting exsitingJob = JobPosting.getJobPosting(jobURI);
+
 		GsonParser parser = new GsonParser();
 		JobPosting newJob = parser.toJobPosting(data);
 		String uri = jobURI;
@@ -103,8 +105,12 @@ public class JobpostingService {
         		uri = "<" + uri + ">";
         	else
         		uri = JobPosting.prefix+uri;
-        }
+		}
+		
 		newJob.setURI(uri);
+		for (Application application : exsitingJob.getApplications()) {
+			newJob.apply(application);	
+		}
 		try {
 			newJob.update();
 			return Response.ok("job updated", MediaType.APPLICATION_JSON).build();

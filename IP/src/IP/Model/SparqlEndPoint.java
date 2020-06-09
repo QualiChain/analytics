@@ -58,7 +58,7 @@ public class SparqlEndPoint {
 	//Query method of SPARQL protocol
 	//The query operation is used to send a SPARQL query to a service and receive the results of the query
 	public static String query(String query) {
-		//System.out.println(query);
+//		System.out.println(query);
 		return sendQuery("query", query);
 	}
 	
@@ -71,7 +71,7 @@ public class SparqlEndPoint {
 		//Create a new RDF Graph to a Graph Store.
 		//Delete an RDF graph from a Graph Store.
 	public static String update(String query) {
-		//System.out.println(query);
+		System.out.println(query);
 		return sendQuery("update", query);
 
 		//HTTPrequest request = new HTTPrequest(REQUEST_PATH + "update");		
@@ -264,6 +264,15 @@ public class SparqlEndPoint {
 					+ " DELETE "
 					+ " WHERE {"
 					+ " " + URI  + "?predicate ?object ."
+					+ "}";
+			return update(query);
+		}
+		
+		public static String deleteObjectAssociations(String URI) {
+			String query = QUERYHEADER
+					+ " DELETE "
+					+ " WHERE {"
+					+ " ?subject ?predicate " + URI + " ."
 					+ "}";
 			return update(query);
 		}
