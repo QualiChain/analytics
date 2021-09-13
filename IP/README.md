@@ -23,3 +23,6 @@ But if you want to use your Fuseki SPARQL endpoint, you need to use both docker 
 
 
     - Run docker-compose up --build --force-recreate -d
+    
+    
+Needs updates
